@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="header :: head"
+      th:with="title='Products'"/>
+
+<body>
+<nav th:include="header :: head-nav" class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+</nav>
+<div class = "container-fluid">
+    <div class = "row">
+        <div class="col" align="center">
+            <h1>Products</h1>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="row">
+                <div class="col-sm card">
+                    <div class="row card-header">
+                        <span>Search by id</span>
+                    </div><br/>
+                    <form class="form-inline my-2 my-lg-0" action="#" th:action="@{/search}" th:object="${product}" method="post">
+                        <input class="form-control mr-sm-2" type="text" name="id" placeholder="Enter Id"/>&nbsp;&nbsp;&nbsp;
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form><br/>
+                </div>
+            </div><br/>
+            <div class="row">
+                <div class="col-sm">
+                    <form action="#" th:action="@{/cancel}" th:object="${product}" method="post">
+                        <button type="submit">Cancel</button>
+                    </form>
+                </div>
+            </div><br/>
+            <div class="row">
+                <div class="col-sm card">
+                    <div class="row card-header">
+                        <span>Filtering by category </span><br/>
+                    </div><br/>
+                    <form action="#" th:action="@{/filter}" th:object="${product}" method="post">
+                        <div class="form-row align-items-center">
+                            <div class="col-auto my-1">
+                                <select class="custom-select mr-sm-2" name="category">
+                                    <option th:each="category : ${categories}"
+                                            th:value="${category.nameCategory}"
+                                            th:text="${category.nameCategory}">
+                                    </option>
+                                </select>
+                            </div>
+                            &nbsp;&nbsp;<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Filter</button>
+                        </div>
+                    </form><br/>
+                </div>
+            </div><br/>
+            <div class="row">
+                <div class="col-sm">
+                    <a href="discount" class="btn btn-primary">Discount for Category</a>
+                </div>
+            </div><br/>
+        </div>
+        <div class="col-sm-9">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">ID</th>
+                            <form action="#" th:action="@{/sortingName}" th:object="${product}" method="post">
+                                <th scope="col">
+                                    <div class="dropdown">
+                                        <a class="text-dark dropdown-toggle" href="#" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Name
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                            <button class="dropdown-item" type="submit" name="sortByName" value="orderName">A-Z</button>
+                                            <button class="dropdown-item" type="submit" name="sortByName" value="reverseOrderName">Z-A</button>
+                                        </div>
+                                    </div>
+                                </th>
+                            </form>
+                        <form action="#" th:action="@{/sortingPrice}" th:object="${product}" method="post">
+                            <th scope="col">
+                                <div class="dropdown">
+                                    <a class="text-dark dropdown-toggle" href="#" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Price
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                        <button class="dropdown-item" type="submit" name="sortByPrice" value="orderPrice">Top -> Down</button>
+                                        <button class="dropdown-item" type="submit" name="sortByPrice" value="reverseOrderPrice">Down -> Up</button>
+                                    </div>
+                                </div>
+                            </th>
+                        </form>
+                        <form action="#" th:action="@{/sortingCategory}" th:object="${product}" method="post">
+                            <th scope="col">
+                                <div class="dropdown">
+                                    <a class="text-dark dropdown-toggle" href="#" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Category
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
+                                        <button class="dropdown-item" type="submit" name="sortByCategory" value="orderCategory">A-Z</button>
+                                        <button class="dropdown-item" type="submit" name="sortByCategory" value="reverseOrderCategory">Z-A</button>
+                                    </div>
+                                </div>
+                            </th>
+                        </form>
+                        <form action="#" th:action="@{/sortingDiscount}" th:object="${product}" method="post">
+                            <th scope="col">
+                                <div class="dropdown">
+                                    <a class="text-dark dropdown-toggle" href="#" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Discount
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu4">
+                                        <button class="dropdown-item" type="submit" name="sortByDiscount" value="orderDiscount">Top -> Down</button>
+                                        <button class="dropdown-item" type="submit" name="sortByDiscount" value="reverseOrderDiscount">Down -> Up</button>
+                                    </div>
+                                </div>
+                            </th>
+                        </form>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.id}">ID</td>
+                    <td th:text="${product.name}">Name</td>
+                    <td th:text="${product.price}">Price</td>
+                    <td th:text="${product.category}">Category</td>
+                    <td th:text="${product.discount}">Discount</td>
+                    <td>
+                        <a th:href="@{'/editProduct/' + ${product.id}}">Edit</a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a th:href="@{'/deleteProduct/' + ${product.id}}">Delete</a>
+
+                        <form th:action="@{'/addToCart/' + ${product.id}}" th:object="${product}" method="post">
+                            <input type="number" min="1" max="100" value="1" name="countOfGoods">
+                            <input type="submit" value="Buy">
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModalSave" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Enter quantity of goods</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="set-product">
+                    <div class="count">
+                        <h6>Enter quantity of goods</h6>
+                        <label>
+                            <input type="text" name="countOfGoods" class="form-control" placeholder="quantity">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+<!--                <button type="submit" class="btn btn-primary">Add To Cart</button>-->
+<!--                <a th:href="@{'/addToCart/' + ${product.id}}">Buy</a>-->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>
