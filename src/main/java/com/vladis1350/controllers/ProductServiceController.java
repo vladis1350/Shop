@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -109,9 +110,9 @@ public class ProductServiceController {
         return Pages.SET_DISCOUNT;
     }
 
-//    @PostMapping(value = Http.SET_DISCOUNT)
-//    public String setDiscountForCategory(@ModelAttribute(EntityConstant.UNIT_PRODUCT) Product product, BigDecimal discount) {
-//        productService.setDiscountForCategory(product.getCategory(), discount);
-//        return Pages.REDIRECT + Pages.HOME;
-//    }
+    @PostMapping(value = Http.SET_DISCOUNT)
+    public String setDiscountForCategory(@ModelAttribute(EntityConstant.UNIT_CATEGORY) Long id_category, BigDecimal discount) throws SQLException {
+        productService.changeDiscountForCategories(id_category, discount);
+        return Pages.REDIRECT + Pages.HOME;
+    }
 }

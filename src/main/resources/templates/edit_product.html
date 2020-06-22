@@ -9,7 +9,7 @@
         <br/>
         <form action="#" th:action="@{/saveEditProduct}" th:object="${product}" method="post">
             <table border="0" cellpadding="10">
-                <tr>
+                <tr style="display:none;">
                     <td>Product Id:</td>
                     <td><input type="text" th:field="*{id}" readonly="readonly"/></td>
                 </tr>
@@ -26,7 +26,7 @@
                     <td>
                         <select th:field="*{category}">
                             <option th:each="category : ${categories}"
-                                    th:value="${category.nameCategory}"
+                                    th:value="${category.id}"
                                     th:text="${category.nameCategory}">
                              </option>
                         </select>

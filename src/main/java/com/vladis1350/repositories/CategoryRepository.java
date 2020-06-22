@@ -16,6 +16,7 @@ import java.sql.Statement;
 import java.util.List;
 
 @Repository
+@Transactional
 public class CategoryRepository<T extends Category> implements Repositories<Category, Long> {
     private static final Logger logger = LoggerFactory.getLogger(ProductRepository.class);
     private Statement statement;
@@ -23,39 +24,34 @@ public class CategoryRepository<T extends Category> implements Repositories<Cate
     private PreparedStatement preparedStatement;
 
     @Override
-    @Transactional
     public void save(Category category) throws SQLException {
-        String insert = "INSERT INTO category (name_category)  VALUES(?)";
+        String insert = "INSERT INTO categories (name_category)  VALUES(?)";
         preparedStatement = databaseConnection.getDbConnection().prepareStatement(insert);
         preparedStatement.setString(1, category.getNameCategory());
         preparedStatement.execute();
     }
 
     @Override
-    @Transactional
     public List<Category> findAll() throws SQLException {
-        ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery("SELECT * FROM category");
+        ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery("SELECT * FROM categories");
         return ResultSetConverter.convertToListCategory(resultSet);
     }
 
     @Override
-    @Transactional
     public Category getById(Long id) throws SQLException {
-        ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery("SELECT * FROM category WHERE id=" + id);
+        ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery("SELECT * FROM categories WHERE id_category=" + id);
         return ResultSetConverter.convertToCategory(resultSet);
     }
 
     @Override
-    @Transactional
     public void delete(Long id) throws SQLException {
         statement = databaseConnection.getDbConnection().createStatement();
-        statement.executeUpdate(" DELETE FROM category WHERE id=" + id);
+        statement.executeUpdate(" DELETE FROM categories WHERE id_category=" + id);
     }
 
     @Override
-    @Transactional
     public void update(Category category) throws SQLException {
         statement = databaseConnection.getDbConnection().createStatement();
-        statement.executeUpdate("UPDATE category SET name_category ='" + category.getNameCategory() + "'");
+        statement.executeUpdate("UPDATE categories SET name_category ='" + category.getNameCategory() + "'");
     }
 }

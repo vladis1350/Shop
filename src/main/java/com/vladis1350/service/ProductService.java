@@ -57,16 +57,7 @@ public class ProductService implements ServiceInterface<Product, Long> {
         return resultFilter;
     }
 
-//    public void setDiscountForCategory(String category, BigDecimal discount) {
-//        Iterable<Product> products = repositories.findAll();
-//        List<Product> resultList = new ArrayList<>();
-//
-//        for (Product product: products) {
-//            if (product.getCategory().equals(category)) {
-//                product.setDiscount(discount);
-//                resultList.add(product);
-//            }
-//        }
-//        repositories.saveAll(resultList);
-//    }
+    public void changeDiscountForCategories(Long id_category, BigDecimal discount) throws SQLException {
+        repositories.changeDiscountForCategories(id_category, discount);
+    }
 }

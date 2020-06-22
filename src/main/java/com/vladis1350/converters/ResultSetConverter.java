@@ -17,11 +17,11 @@ public class ResultSetConverter {
         List<Product> list = new ArrayList<>();
         while (resultSet.next()) {
             Long id = resultSet.getLong(1);
-            String category = resultSet.getString(2);
-            String desc = resultSet.getString(3);
-            BigDecimal discount = resultSet.getBigDecimal(4);
-            String name = resultSet.getString(5);
-            BigDecimal price = resultSet.getBigDecimal(6);
+            String name = resultSet.getString(2);
+            BigDecimal price = resultSet.getBigDecimal(3);
+            String desc = resultSet.getString(4);
+            BigDecimal discount = resultSet.getBigDecimal(5);
+            String category = resultSet.getString(6);
             list.add(new Product(id, name, price, category, discount, desc));
         }
         return list;
@@ -42,11 +42,11 @@ public class ResultSetConverter {
         while (resultSet.next()) {
             product = Product.builder()
                     .id(resultSet.getLong(1))
-                    .category(resultSet.getString(2))
-                    .description(resultSet.getString(3))
-                    .discount(resultSet.getBigDecimal(4))
-                    .name(resultSet.getString(5))
-                    .price(resultSet.getBigDecimal(6))
+                    .name(resultSet.getString(2))
+                    .price(resultSet.getBigDecimal(3))
+                    .description(resultSet.getString(4))
+                    .discount(resultSet.getBigDecimal(5))
+                    .category(resultSet.getString(6))
                     .build();
         }
         return product;
