@@ -26,31 +26,41 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <h3 class="thin text-center">Register a new account</h3>
-                        <p class="text-center text-muted">Lorem ipsum dolor sit amet, <a href="signin.html">Login</a> adipisicing elit. Quo nulla quibusdam cum doloremque incidunt nemo sunt a tenetur omnis odio. </p>
+                        <p class="text-center text-muted">Lorem ipsum dolor sit amet, <a href="signIn">Login</a> adipisicing elit. Quo nulla quibusdam cum doloremque incidunt nemo sunt a tenetur omnis odio. </p>
                         <hr>
 
-                        <form>
+                        <form action="#" th:action="@{/signUp}" th:object="${user}" method="POST">
+                            <div class="top-margin">
+                                <label>Login</label>
+                                <label th:text="${userNameMessage}"></label><br />
+                                <input type="text" class="form-control" name="userName" th:field="*{userName}">
+                            </div>
                             <div class="top-margin">
                                 <label>First Name</label>
-                                <input type="text" class="form-control">
+                                <label th:text="${firstNameMessage}"></label><br />
+                                <input type="text" class="form-control" name="first_name" th:field="*{first_name}">
                             </div>
                             <div class="top-margin">
                                 <label>Last Name</label>
-                                <input type="text" class="form-control">
+                                <label th:text="${lastNameMessage}"></label><br />
+                                <input type="text" class="form-control" th:field="*{last_name}">
                             </div>
                             <div class="top-margin">
                                 <label>Email Address <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control">
+                                <label th:text="${emailMessage}"></label><br />
+                                <input type="text" class="form-control" th:field="*{email}">
                             </div>
 
                             <div class="row top-margin">
                                 <div class="col-sm-6">
                                     <label>Password <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control">
+                                    <label th:text="${passwordMessage}"></label>
+                                    <input type="password" class="form-control" name="password">
                                 </div>
                                 <div class="col-sm-6">
                                     <label>Confirm Password <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control">
+                                    <input type="password" class="form-control" name="confPassword">
+                                    <label th:text="${congPasswordMessage}"></label>
                                 </div>
                             </div>
 
@@ -58,10 +68,7 @@
 
                             <div class="row">
                                 <div class="col-lg-8">
-                                    <label class="checkbox">
-                                        <input type="checkbox">
-                                        I've read the <a href="page_terms.html">Terms and Conditions</a>
-                                    </label>
+
                                 </div>
                                 <div class="col-lg-4 text-right">
                                     <button class="btn btn-action" type="submit">Register</button>
