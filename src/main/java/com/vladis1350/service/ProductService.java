@@ -57,6 +57,10 @@ public class ProductService implements ServiceInterface<Product, Long> {
         return resultFilter;
     }
 
+    public Product findByProductName(String product_name) throws SQLException {
+        return repositories.findByProductName(product_name);
+    }
+
     public void changeDiscountForCategories(Long id_category, BigDecimal discount) throws SQLException {
         repositories.changeDiscountForCategories(id_category, discount);
     }

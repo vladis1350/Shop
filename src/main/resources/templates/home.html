@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:include="header :: head"
-      th:with="title='Products'"/>
+      th:with="title='Products'"></head>
 
 <body>
-<nav th:include="header :: head-nav" class="navbar navbar-expand-lg navbar-dark bg-dark">
-
-</nav>
+<div th:include="header :: head-nav" class="navbar navbar-inverse navbar-fixed-top headroom"></div>
+<h1 th:inline="text">[[${#httpServletRequest.remoteUser}]]!</h1>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
 <div class = "container-fluid">
     <div class = "row">
         <div class="col" align="center">
@@ -21,8 +23,8 @@
                     <div class="row card-header">
                         <span>Search by id</span>
                     </div><br/>
-                    <form class="form-inline my-2 my-lg-0" action="#" th:action="@{/search}" th:object="${product}" method="post">
-                        <input class="form-control mr-sm-2" type="text" name="id" placeholder="Enter Id"/>&nbsp;&nbsp;&nbsp;
+                    <form class="form-inline my-2 my-lg-0" action="#" th:action="@{/search}" method="post">
+                        <input class="form-control mr-sm-2" type="text" name="id_product" placeholder="Enter Id"/>&nbsp;&nbsp;&nbsp;
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                     </form><br/>
                 </div>
@@ -169,8 +171,6 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<div th:include="header :: scripts"></div>
 </body>
 </html>

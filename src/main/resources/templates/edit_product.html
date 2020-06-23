@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:include="header :: head"
-      th:with="title='Edit product'"/>
-<link rel="stylesheet" th:href="@{/static/styles/myCss/style.css}"/>
+      th:with="title='Edit product'"></head>
 <body>
+<nav th:include="header :: head-nav" class="navbar navbar-inverse navbar-fixed-top headroom">
+</nav>
     <div align="center">
         <h1>Edit Product</h1>
         <br/>
@@ -44,5 +45,6 @@
             </table>
         </form>
     </div>
+<div th:include="header :: scripts"></div>
 </body>
 </html>

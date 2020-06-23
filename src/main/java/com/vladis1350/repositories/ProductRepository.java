@@ -7,6 +7,7 @@ import com.vladis1350.converters.ResultSetConverter;
 import com.vladis1350.repositories.interfaces.Repositories;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +32,7 @@ public class ProductRepository<T extends Product> implements Repositories<Produc
         preparedStatement.setString(2, String.valueOf(product.getPrice()));
         preparedStatement.setString(3, product.getDescription());
         preparedStatement.setString(4, String.valueOf(product.getDiscount()));
-        preparedStatement.setString(5, product.getCategory());
+        preparedStatement.setString(5, String.valueOf(product.getCategory()));
 
         preparedStatement.executeUpdate();
     }
@@ -43,6 +44,12 @@ public class ProductRepository<T extends Product> implements Repositories<Produc
                         "FROM product, categories " +
                         "WHERE product.id_category=categories.id_category");
         return ResultSetConverter.convertToListProduct(resultSet);
+    }
+
+    public Product findByProductName(String product_name) throws SQLException {
+        ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(
+                "SELECT * FROM product WHERE product_name = '" + product_name + "'");
+        return ResultSetConverter.convertToProduct(resultSet);
     }
 
     @Override

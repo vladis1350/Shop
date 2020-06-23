@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:include="header :: head"
-      th:with="title='New product'"/>
-<link rel="stylesheet" th:href="@{/static/styles/myCss/style.css}"/>
+      th:with="title='New product'"></head>
 <body>
+<div th:include="header :: head-nav" class="navbar navbar-inverse navbar-fixed-top headroom">
+
+</div>
     <div align="center">
         <h1>Create new Product</h1>
         <br/>
@@ -11,31 +13,50 @@
         <a href="newCategory" target="_blank">Add new category</a>
         <br/><br/>
         <br/>
-        <form action="#" th:action="@{/saveProduct}" th:object="${product}" method="post">
-            <table border="1" cellpadding="10">
+        <span style="font-size: 16px; color: green;" th:text="${successMessage}"></span>
+        <span style="font-size: 16px; color: #FF1C19;" th:text="${errorMessage}"></span>
+        <form action="#" th:action="@{/saveProduct}" method="post">
+            <table border="0" cellpadding="10">
                 <tr>
                     <td>Product Name:</td>
-                    <td><input type="text" th:field="*{name}"/></td>
+                    <td>
+                        <span style="font-size: 14px; color: #FF1C19;" th:text="${errProductName}"></span><br/>
+                        <input class="form-control" type="text" name="product_name"/>
+                    </td>
                 </tr>
                 <tr>
                     <td>Price:</td>
-                    <td><input type="text" th:field="*{price}"/></td>
+                    <td>
+                        <span style="font-size: 14px; color: #FF1C19;" th:text="${errProductPrice}"></span><br/>
+                        <input class="form-control" type="text" name="price"/>
+                    </td>
                 </tr>
                 <tr>
                     <td>Category:</td>
                     <td>
-                        <select th:field="*{category}">
+                        <select class="form-control" name="category">
                             <option th:each="category : ${categories}"
                                     th:value="${category.id}"
                                     th:text="${category.nameCategory}">
-                             </option>
+                            </option>
                         </select>
-
                     </td>
                 </tr>
                 <tr>
                     <td>Discount:</td>
-                    <td><input type="text" th:field="*{discount}"/></td>
+
+                    <td>
+                        <span style="font-size: 14px; color: #FF1C19;" th:text="${errProductDiscount}"></span><br/>
+                        <input class="form-control" type="text" name="discount"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Discount:</td>
+                    <td>
+                        <label>
+                            <textarea rows="10" cols="30" name="description"></textarea>
+                        </label>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -45,5 +66,6 @@
             </table>
         </form>
     </div>
+<div th:include="header :: scripts"></div>
 </body>
 </html>
