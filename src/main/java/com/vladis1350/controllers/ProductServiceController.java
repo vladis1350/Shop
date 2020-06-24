@@ -45,15 +45,6 @@ public class ProductServiceController {
         return mod;
     }
 
-    @GetMapping(value = Http.EDIT_PRODUCT + "/{id}")
-    public ModelAndView showEditProductsForm(@PathVariable(name = "id") Long id, Model model) throws SQLException {
-        ModelAndView modelAndView = new ModelAndView(Pages.EDIT_PRODUCT);
-        Product product = productService.getById(id);
-        model.addAttribute(EntityConstant.CATEGORIES, categoryService.findAll());
-        modelAndView.addObject(EntityConstant.UNIT_PRODUCT, product);
-        return modelAndView;
-    }
-
     @PostMapping(value = Http.SAVE_PRODUCT)
     public ModelAndView showProduct(@RequestParam(value = "product_name", required = false) String product_name,
                                     @RequestParam(value = "price", required = false) BigDecimal price,
@@ -93,16 +84,6 @@ public class ProductServiceController {
         return mod;
     }
 
-    @PostMapping(value = Http.SAVE_EDIT_PRODUCT)
-    public String saveEditProduct(@ModelAttribute(EntityConstant.UNIT_PRODUCT) Product product) throws SQLException {
-        if (ProductValidator.checkValidateDataProduct(product)) {
-            productService.update(product);
-        } else {
-
-        }
-        return Pages.REDIRECT + Pages.HOME;
-    }
-
     @PostMapping(value = Http.CANCEL)
     public String clearFilterAndSearch() {
         return Pages.REDIRECT + Pages.HOME;
@@ -122,12 +103,6 @@ public class ProductServiceController {
         model.addAttribute(EntityConstant.CATEGORIES, categoryService.findAll());
         model.addAttribute(EntityConstant.PRODUCTS, productList);
         return Pages.HOME;
-    }
-
-    @GetMapping(value = Http.DELETE_PRODUCT + "/{id}")
-    public String deleteProducts(@PathVariable(name = "id") Long id) throws SQLException {
-        productService.remove(id);
-        return Pages.REDIRECT + Pages.HOME;
     }
 
     @GetMapping(value = Http.DISCOUNT)

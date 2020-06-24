@@ -130,10 +130,6 @@
                     <td th:text="${product.category}">Category</td>
                     <td th:text="${product.discount}">Discount</td>
                     <td>
-                        <a th:href="@{'/editProduct/' + ${product.id}}">Edit</a>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a th:href="@{'/deleteProduct/' + ${product.id}}">Delete</a>
-
                         <form th:action="@{'/addToCart/' + ${product.id}}" th:object="${product}" method="post">
                             <input type="number" min="1" max="100" value="1" name="countOfGoods">
                             <input type="submit" value="Buy">
