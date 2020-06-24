@@ -32,35 +32,35 @@
                         <form action="#" th:action="@{/signUp}" th:object="${user}" method="POST">
                             <div class="top-margin">
                                 <label>Login</label>
-                                <label th:text="${userNameMessage}"></label><br />
+                                <label class="errMessage" th:text="${userNameMessage}"></label><br />
                                 <input type="text" class="form-control" name="userName" th:field="*{userName}">
                             </div>
                             <div class="top-margin">
                                 <label>First Name</label>
-                                <label th:text="${firstNameMessage}"></label><br />
+                                <label class="errMessage" th:text="${firstNameMessage}"></label><br />
                                 <input type="text" class="form-control" name="first_name" th:field="*{first_name}">
                             </div>
                             <div class="top-margin">
                                 <label>Last Name</label>
-                                <label th:text="${lastNameMessage}"></label><br />
+                                <label class="errMessage" th:text="${lastNameMessage}"></label><br />
                                 <input type="text" class="form-control" th:field="*{last_name}">
                             </div>
                             <div class="top-margin">
                                 <label>Email Address <span class="text-danger">*</span></label>
-                                <label th:text="${emailMessage}"></label><br />
+                                <label class="errMessage" th:text="${emailMessage}"></label><br />
                                 <input type="text" class="form-control" th:field="*{email}">
                             </div>
 
                             <div class="row top-margin">
                                 <div class="col-sm-6">
                                     <label>Password <span class="text-danger">*</span></label>
-                                    <label th:text="${passwordMessage}"></label>
-                                    <input type="password" class="form-control" name="password">
+                                    <input type="password" class="form-control" th:field="*{password}">
+                                    <label class="errMessage" th:text="${passwordMessage}"></label>
                                 </div>
                                 <div class="col-sm-6">
                                     <label>Confirm Password <span class="text-danger">*</span></label>
                                     <input type="password" class="form-control" name="confPassword">
-                                    <label th:text="${congPasswordMessage}"></label>
+                                    <label class="errMessage" th:text="${confPasswordMessage}"></label>
                                 </div>
                             </div>
 

@@ -5,9 +5,7 @@ import com.vladis1350.auth.bean.User;
 import com.vladis1350.auth.repositories.UserRepository;
 import com.vladis1350.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,21 +35,35 @@ public class RegistrationController {
         User userFromDb = userRepository.findByUserName(user.getUserName());
         if (userFromDb != null) {
             mod.addObject("userNameMessage", "Пользователь с таким именем уже существует!");
-            mod.setViewName("/signUp");
             return mod;
         }
-
         if (!confPassword.isPresent() || !user.getPassword().equals(confPassword.get())) {
-            mod.addObject("passwordMessage","Пароли не совпадают.");
+            mod.addObject("confPasswordMessage", "Пароли не совпадают.");
+        }
+        if (!UserValidator.validateUserName(user.getUserName())) {
+            mod.addObject("userNameMessage", "Логин должен быть не менее 5-х символов.");
+        }
+        if (!UserValidator.validateFirstName(user.getFirst_name())) {
+            mod.addObject("firstNameMessage", "Введите имя более 3-x символов.");
+        }
+        if (!UserValidator.validateLastName(user.getLast_name())) {
+            mod.addObject("lastNameMessage", "Введите фамилию более 3-х символов.");
+        }
+        if (!UserValidator.validatePassword(user.getPassword())) {
+            mod.addObject("passwordMessage", "Придумайте пароль более 5 символов.");
         }
 
-        if (!UserValidator.validateUserName(user.getFirst_name())) {
-            mod.addObject("userName","Логин должен быть больше 3-х символов.");
+        if (!UserValidator.validateEmail(user.getEmail())) {
+            mod.addObject("emailMessage", "Не верный Email.");
         }
+        if (UserValidator.checkValidateDataUser(user)) {
             user.setActive(true);
             user.setRoles(Collections.singleton(Role.ROLE_USER));
             userRepository.save(user);
+            mod.addObject("successRegistration", "Пользователь успешно зарегистрирован!");
             mod.setViewName("redirect:/signIn");
+        }
+        mod.setViewName("/signUp");
         return mod;
     }
 }
