@@ -34,13 +34,21 @@ public class ProductManagementController {
         return mod;
     }
 
+    @GetMapping("/admin/products")
+    public ModelAndView showProductListInAdminPanel() throws SQLException {
+        ModelAndView mod = new ModelAndView();
+        mod.addObject("productList", productService.findAll());
+        mod.addObject("categoryList", categoryService.findAll());
+        return mod;
+    }
+
     @PostMapping(value = Http.SAVE_PRODUCT)
-    public ModelAndView showProduct(@RequestParam(value = "product_name", required = false) String product_name,
+    public ModelAndView  showProduct(@RequestParam(value = "product_name", required = false) String product_name,
                                     @RequestParam(value = "price", required = false) BigDecimal price,
                                     @RequestParam(value = "discount", required = false) BigDecimal discount,
                                     @RequestParam(value = "category", required = false) String category,
                                     @RequestParam(value = "description", required = false) String description) throws SQLException {
-        ModelAndView mod = new ModelAndView("admin/products");
+        ModelAndView mod = new ModelAndView();
         Product product = Product.builder()
                 .name(product_name)
                 .price(price)
@@ -51,12 +59,13 @@ public class ProductManagementController {
         Product newProduct = productService.findByProductName(product_name);
         if (newProduct != null) {
             mod.addObject("errorMessage", "Продукт с таким именем уже сужествует!");
-            mod.addObject(EntityConstant.UNIT_PRODUCT, new Product());
+            mod.addObject(EntityConstant.PRODUCTS, productService.findAll());
             mod.addObject(EntityConstant.CATEGORIES, categoryService.findAll());
+            mod.setViewName("/admin/products");
             return mod;
         }
         if (!ProductValidator.validateName(product_name)) {
-            mod.addObject("errProductName", "Нзвание продукта должно быть меньше 3 и больше 32 символов!");
+            mod.addObject("errProductName", "Нзвание должно быть не менее 3-х и не более 32 символов!");
         }
         if (!ProductValidator.validatePrice(price)) {
             mod.addObject("errProductPrice", "Цена не может быть меньше 0!");
@@ -68,9 +77,9 @@ public class ProductManagementController {
             productService.save(product);
             mod.addObject("successMessage", "Продукт успешно добавлен");
         }
-        mod.addObject(EntityConstant.UNIT_PRODUCT, new Product());
+        mod.addObject(EntityConstant.PRODUCTS, productService.findAll());
         mod.addObject(EntityConstant.CATEGORIES, categoryService.findAll());
-        mod.setViewName(Pages.REDIRECT + "admin/products");
+        mod.setViewName("/admin/products");
         return mod;
     }
 

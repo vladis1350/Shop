@@ -7,10 +7,6 @@ table.new-product td {
     margin: 20px;
 }
 
-.blockNewProduct {
-    display: none;
-}
-
-#btnCloseNewProduct {
+#btnNewProduct {
     display: none;
 }

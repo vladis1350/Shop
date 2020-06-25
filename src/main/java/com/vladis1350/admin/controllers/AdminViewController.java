@@ -38,14 +38,6 @@ public class AdminViewController {
         return mod;
     }
 
-    @GetMapping("/admin/products")
-    public ModelAndView showProductListInAdminPanel() throws SQLException {
-        ModelAndView mod = new ModelAndView();
-        mod.addObject("productList", productService.findAll());
-        mod.addObject("categoryList", categoryService.findAll());
-        return mod;
-    }
-
     @GetMapping("/admin/categories")
     public ModelAndView showCategoryListInAdminPanel() throws SQLException {
         ModelAndView mod = new ModelAndView();
