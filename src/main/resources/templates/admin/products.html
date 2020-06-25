@@ -2,7 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:include="admin/start_page :: head"
-      th:with="title='ttt'"></head>
+      th:with="title='ttt'">
+
+
+</head>
 
 <body class="fix-header">
     <!-- ============================================================== -->
@@ -34,20 +37,70 @@
         <!-- ============================================================== -->
         <div id="page-wrapper">
             <div class="container-fluid">
-                <div class="row bg-title">
+                <div class="row bg-title" id="bg-title">
                     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                        <h4 class="page-title">Users</h4>
+                        <h4 class="page-title">Products</h4>
                     </div>
-                    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-                        <a href="https://wrappixel.com/templates/ampleadmin/" target="_blank"
-                            class="btn btn-danger pull-right m-l-20 hidden-xs hidden-sm waves-effect waves-light">Upgrade
-                            to Pro
+                    <div class="col-lg-4 col-sm-8 col-md-8 col-xs-12">
+                        <button type="button" class="btn btn-primary" id="btnNewProduct">Add new product</button>
+                        <button type="button" class="btn btn-danger" id="btnCloseNewProduct">Cancel</button>
 
-                        </a>
-                        <ol class="breadcrumb">
-                            <li><a href="#">Dashboard</a></li>
-                            <li class="active">Basic Table</li>
-                        </ol>
+                    </div>
+                    <div class="col-lg-4 col-sm-8 col-md-8 col-xs-12">
+                        <div class="col-sm">
+                            <a href="discount" class="btn btn-primary">Discount for Category</a>
+                        </div><br/>
+                    </div>
+                    <div class="blockNewProduct" align="center">
+                        <br/><br/>
+                        <br/>
+                        <span style="font-size: 16px; color: green;" th:text="${successMessage}"></span>
+                        <span style="font-size: 16px; color: #FF1C19;" th:text="${errorMessage}"></span>
+                        <form action="#" th:action="@{/saveProduct}" method="post">
+                            <table border="0" cellpadding="10" class="new-product">
+                                <tr>
+                                    <td style="width: 150px;">Product Name:</td>
+                                    <td>
+                                        <span style="font-size: 14px; color: #FF1C19;" th:text="${errProductName}"></span><br/>
+                                        <input class="form-control" type="text" name="product_name"/>
+                                    </td>
+                                    <td style="width: 150px;">Price:</td>
+                                    <td>
+                                        <span style="font-size: 14px; color: #FF1C19;" th:text="${errProductPrice}"></span><br/>
+                                        <input class="form-control" type="text" name="price"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 150px;">Category:</td>
+                                    <td>
+                                        <select class="form-control" name="category">
+                                            <option th:each="category : ${categoryList}"
+                                                    th:value="${category.id}"
+                                                    th:text="${category.nameCategory}">
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td style="width: 150px;">Discount:</td>
+                                    <td>
+                                        <span style="font-size: 14px; color: #FF1C19;" th:text="${errProductDiscount}"></span><br/>
+                                        <input class="form-control" type="text" name="discount"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 150px;">Description:</td>
+                                    <td colspan="2">
+                                        <label>
+                                            <textarea rows="5" cols="60" name="description"></textarea>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <button type="submit">Save</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -55,8 +108,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="white-box">
-                            <h3 class="box-title">Basic Table</h3>
-                            <p class="text-muted">Add class <code>.table</code></p>
+                            <h3 class="box-title">Product Table</h3>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -97,6 +149,25 @@
     </div>
     <!-- /#wrapper -->
 <div th:include="admin/start_page :: scripts"></div>
+    <script>
+        $("#btnNewProduct").click(function () {
+            $(".blockNewProduct").fadeIn(500);
+            $("#btnCloseNewProduct").css({display:"block"});
+            $(this).css({display:"none"});
+        });
+
+        $("#btnCloseNewProduct").click(function() {
+            $(".blockNewProduct").fadeOut(500);
+            $("#btnNewProduct").css({display:"block"});
+            $(this).css({display:"none"});
+        });
+
+        $('#message').show(1000, function(){
+            setTimeout(function(){
+                $('#message').hide(500);
+            }, 5000);
+        });
+    </script>
 </body>
 
 </html>

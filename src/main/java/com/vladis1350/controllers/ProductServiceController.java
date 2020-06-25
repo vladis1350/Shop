@@ -36,54 +36,6 @@ public class ProductServiceController {
         return Pages.HOME;
     }
 
-    @GetMapping(value = Http.NEW_PRODUCT)
-    public ModelAndView showNewProductsForm() throws SQLException {
-        ModelAndView mod = new ModelAndView();
-        mod.addObject(EntityConstant.UNIT_PRODUCT, new Product());
-        mod.addObject(EntityConstant.CATEGORIES, categoryService.findAll());
-        mod.setViewName(Pages.NEW_PRODUCT);
-        return mod;
-    }
-
-    @PostMapping(value = Http.SAVE_PRODUCT)
-    public ModelAndView showProduct(@RequestParam(value = "product_name", required = false) String product_name,
-                                    @RequestParam(value = "price", required = false) BigDecimal price,
-                                    @RequestParam(value = "discount", required = false) BigDecimal discount,
-                                    @RequestParam(value = "category", required = false) String category,
-                                    @RequestParam(value = "description", required = false) String description) throws SQLException {
-        ModelAndView mod = new ModelAndView(Pages.NEW_PRODUCT);
-        Product product = Product.builder()
-                .name(product_name)
-                .price(price)
-                .discount(discount)
-                .category(category)
-                .description(description)
-                .build();
-        Product newProduct = productService.findByProductName(product_name);
-        if (newProduct != null) {
-            mod.addObject("errorMessage", "Продукт с таким именем уже сужествует!");
-            mod.addObject(EntityConstant.UNIT_PRODUCT, new Product());
-            mod.addObject(EntityConstant.CATEGORIES, categoryService.findAll());
-            return mod;
-        }
-        if (!ProductValidator.validateName(product_name)) {
-            mod.addObject("errProductName", "Нзвание продукта должно быть меньше 3 и больше 32 символов!");
-        }
-        if (!ProductValidator.validatePrice(price)) {
-            mod.addObject("errProductPrice", "Цена не может быть меньше 0!");
-        }
-        if (!ProductValidator.validateDiscount(discount)) {
-            mod.addObject("errProductDiscount", "Скидка не может быть меньше 0 и больше 100%!");
-        }
-        if (ProductValidator.checkValidateDataProduct(product)){
-            productService.save(product);
-            mod.addObject("successMessage", "Продукт успешно добавлен");
-        }
-            mod.addObject(EntityConstant.UNIT_PRODUCT, new Product());
-            mod.addObject(EntityConstant.CATEGORIES, categoryService.findAll());
-        return mod;
-    }
-
     @PostMapping(value = Http.CANCEL)
     public String clearFilterAndSearch() {
         return Pages.REDIRECT + Pages.HOME;
@@ -103,20 +55,5 @@ public class ProductServiceController {
         model.addAttribute(EntityConstant.CATEGORIES, categoryService.findAll());
         model.addAttribute(EntityConstant.PRODUCTS, productList);
         return Pages.HOME;
-    }
-
-    @GetMapping(value = Http.DISCOUNT)
-    public String showSetDiscountForm(Model model) throws SQLException {
-        Product product = new Product();
-        model.addAttribute(EntityConstant.CATEGORIES, categoryService.findAll());
-        model.addAttribute(EntityConstant.UNIT_PRODUCT, product);
-
-        return Pages.SET_DISCOUNT;
-    }
-
-    @PostMapping(value = Http.SET_DISCOUNT)
-    public String setDiscountForCategory(@ModelAttribute(EntityConstant.UNIT_CATEGORY) Long id_category, BigDecimal discount) throws SQLException {
-        productService.changeDiscountForCategories(id_category, discount);
-        return Pages.REDIRECT + Pages.HOME;
     }
 }

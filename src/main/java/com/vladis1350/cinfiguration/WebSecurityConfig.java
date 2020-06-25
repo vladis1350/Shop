@@ -30,6 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(Pages.SET_DISCOUNT).permitAll()
                 .antMatchers("/admin/**").permitAll()
                 .antMatchers("/signUp").permitAll()
+                .antMatchers("/saveProduct").permitAll()
                 .anyRequest().authenticated()
                 .and()
                     .formLogin()
