@@ -1,8 +1,9 @@
 package com.vladis1350.auth.controllers;
 
-import com.vladis1350.auth.bean.Role;
 import com.vladis1350.auth.bean.User;
+import com.vladis1350.auth.bean.UserRoles;
 import com.vladis1350.auth.repositories.UserRepository;
+import com.vladis1350.auth.service.UserService;
 import com.vladis1350.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,14 +13,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.Optional;
 
 @Controller
 public class RegistrationController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping(value = "/signUp")
     public ModelAndView registration() {
@@ -32,7 +32,7 @@ public class RegistrationController {
     public ModelAndView addNewUser(@Valid User user,
                                    @RequestParam Optional<String> confPassword) {
         ModelAndView mod = new ModelAndView();
-        User userFromDb = userRepository.findByUserName(user.getUserName());
+        User userFromDb = userService.findUserByUserName(user.getUserName());
         if (userFromDb != null) {
             mod.addObject("userNameMessage", "Пользователь с таким именем уже существует!");
             return mod;
@@ -57,9 +57,7 @@ public class RegistrationController {
             mod.addObject("emailMessage", "Не верный Email.");
         }
         if (UserValidator.checkValidateDataUser(user)) {
-            user.setActive(true);
-            user.setRoles(Collections.singleton(Role.ROLE_USER));
-            userRepository.save(user);
+            userService.saveUser(user, Optional.empty());
             mod.addObject("successRegistration", "Пользователь успешно зарегистрирован!");
             mod.setViewName("redirect:/signIn");
         }

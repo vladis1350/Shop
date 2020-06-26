@@ -1,14 +1,17 @@
 package com.vladis1350.auth.bean;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
+@Builder
 @Table(name="users")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,10 +40,13 @@ public class User {
     @Column(name = "active")
     private Boolean active;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name="user_role", joinColumns = @JoinColumn(name = "user_id"))
-    @Enumerated(EnumType.STRING)
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-
+    public String getAllRoles() {
+        return roles.stream()
+                .map(role -> role.getRole().name())
+                .collect(Collectors.joining(", ", "{", "}"));
+    }
 }
