@@ -1,6 +1,6 @@
 package com.vladis1350.repositories;
 
-import com.vladis1350.bean.Cart;
+import com.vladis1350.bean.UserShoppingCart;
 import com.vladis1350.configDatabase.DatabaseConnection;
 import com.vladis1350.repositories.interfaces.Repositories;
 import org.springframework.stereotype.Repository;
@@ -12,36 +12,36 @@ import java.sql.Statement;
 import java.util.List;
 
 @Repository
-public class CartRepository implements Repositories<Cart, Long> {
+public class UserShoppingCartRepository implements Repositories<UserShoppingCart, Long> {
     private Statement statement;
     private DatabaseConnection databaseConnection = new DatabaseConnection();
     private PreparedStatement preparedStatement;
 
     public int getCountRecord() throws SQLException {
-        String query = "SELECT COUNT(*) AS count FROM cart";
+        String query = "SELECT COUNT(*) AS count FROM user_shopping_cart";
         ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(query);
         return resultSet.getInt(1);
     }
 
 
     @Override
-    public void save(Cart cart) throws SQLException {
-        String insert = "INSERT INTO cart (id_cart, id_product, count_of_goods, amount_of_money) VALUES(?,?,?,?)";
+    public void save(UserShoppingCart userShoppingCart) throws SQLException {
+        String insert = "INSERT INTO user_shopping_cart (id_shopping_cart, id_product, quantity, summ_order) VALUES(?,?,?,?)";
         preparedStatement = databaseConnection.getDbConnection().prepareStatement(insert);
-        preparedStatement.setLong(1, cart.getId_cart());
-        preparedStatement.setLong(2, cart.getId_product());
-        preparedStatement.setInt(3, cart.getQuantityOfGoods());
-        preparedStatement.setBigDecimal(4, cart.getAmountOfMoney());
+        preparedStatement.setLong(1, userShoppingCart.getId_cart());
+        preparedStatement.setLong(2, userShoppingCart.getId_product());
+        preparedStatement.setInt(3, userShoppingCart.getQuantityOfGoods());
+        preparedStatement.setBigDecimal(4, userShoppingCart.getAmountOfMoney());
         preparedStatement.execute();
     }
 
     @Override
-    public List<Cart> findAll() throws SQLException {
+    public List<UserShoppingCart> findAll() throws SQLException {
         return null;
     }
 
     @Override
-    public Cart getById(Long id) throws SQLException {
+    public UserShoppingCart getById(Long id) throws SQLException {
         return null;
     }
 
@@ -51,7 +51,7 @@ public class CartRepository implements Repositories<Cart, Long> {
     }
 
     @Override
-    public void update(Cart cart) throws SQLException {
+    public void update(UserShoppingCart userShoppingCart) throws SQLException {
 
     }
 }

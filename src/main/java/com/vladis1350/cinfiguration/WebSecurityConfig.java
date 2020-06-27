@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.reactive.result.method.annotation.AuthenticationPrincipalArgumentResolver;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -28,33 +30,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(bCryptPasswordEncoder);
-//                .usersByUsernameQuery("SELECT user_name, password, active FROM users WHERE user_name=?")
-//                .authoritiesByUsernameQuery(
-//                        "SELECT users.user_name, roles.role_name " +
-//                                "FROM users INNER JOIN user_role " +
-//                                "ON users.id_user=user_role.user_id " +
-//                                "WHERE users.user_name=?");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/home").permitAll()
-                .antMatchers(Pages.CATEGORY).permitAll()
-                .antMatchers(Pages.EDIT_PRODUCT).permitAll()
-                .antMatchers(Pages.SET_DISCOUNT).permitAll()
-                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers("/signUp").permitAll()
-                .antMatchers("/saveProduct").permitAll()
-                .anyRequest().authenticated()
+                    .antMatchers("/signIn").permitAll()
+//                    .antMatchers("/home").permitAll()
+                    .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                    .antMatchers("/signUp").permitAll()
+                    .antMatchers("/saveProduct").permitAll()
+                    .anyRequest().authenticated()
                 .and()
                     .formLogin()
-                    .loginPage("/signIn")
-                    .permitAll()
+                    .loginPage("/signIn").permitAll()
+//                    .failureUrl("/signIn?error=true")
+                    .defaultSuccessUrl("/home", true)
+//                    .usernameParameter("user_name")
+//                    .passwordParameter("password")
                 .and()
                     .logout()
-                    .permitAll();
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                    .logoutSuccessUrl("/");
+
     }
 
 

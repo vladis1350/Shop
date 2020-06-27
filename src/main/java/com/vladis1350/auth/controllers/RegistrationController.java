@@ -1,8 +1,7 @@
 package com.vladis1350.auth.controllers;
 
 import com.vladis1350.auth.bean.User;
-import com.vladis1350.auth.bean.UserRoles;
-import com.vladis1350.auth.repositories.UserRepository;
+import com.vladis1350.auth.service.UserAccessService;
 import com.vladis1350.auth.service.UserService;
 import com.vladis1350.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ public class RegistrationController {
     @PostMapping(value = "/signUp")
     public ModelAndView addNewUser(@Valid User user,
                                    @RequestParam Optional<String> confPassword) {
-        ModelAndView mod = new ModelAndView();
+        ModelAndView mod = new ModelAndView("/signUp");
         User userFromDb = userService.findUserByUserName(user.getUserName());
         if (userFromDb != null) {
             mod.addObject("userNameMessage", "Пользователь с таким именем уже существует!");
@@ -61,7 +60,6 @@ public class RegistrationController {
             mod.addObject("successRegistration", "Пользователь успешно зарегистрирован!");
             mod.setViewName("redirect:/signIn");
         }
-        mod.setViewName("/signUp");
         return mod;
     }
 }

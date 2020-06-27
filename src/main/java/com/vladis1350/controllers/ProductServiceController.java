@@ -1,5 +1,7 @@
 package com.vladis1350.controllers;
 
+import com.vladis1350.auth.service.UserAccessService;
+import com.vladis1350.auth.service.UserService;
 import com.vladis1350.bean.Product;
 import com.vladis1350.constants.EntityConstant;
 import com.vladis1350.constants.Http;
@@ -15,6 +17,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -29,11 +33,19 @@ public class ProductServiceController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private UserAccessService userAccessService;
+
+    @Autowired
+    private UserService userService;
+
     @GetMapping(value = Http.HOME)
-    public String viewHomePage(Model model) throws SQLException {
-        model.addAttribute(EntityConstant.PRODUCTS, productService.findAll());
-        model.addAttribute(EntityConstant.CATEGORIES, categoryService.findAll());
-        return Pages.HOME;
+    public ModelAndView viewHomePage() throws SQLException {
+        ModelAndView mod = new ModelAndView("home");
+        mod.addObject("IS_AUTHENTICATED", userAccessService.isCurrentUserAuthenticated());
+        mod.addObject(EntityConstant.PRODUCTS, productService.findAll());
+        mod.addObject(EntityConstant.CATEGORIES, categoryService.findAll());
+        return mod;
     }
 
     @PostMapping(value = Http.CANCEL)

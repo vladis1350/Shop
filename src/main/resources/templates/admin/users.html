@@ -57,7 +57,7 @@
                                             <th>Last Name</th>
                                             <th>Username</th>
                                             <th>Email</th>
-
+                                            <th>Role</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -67,6 +67,7 @@
                                             <td th:text="${user.last_name}">Last Name</td>
                                             <td th:text="${user.userName}">UserName</td>
                                             <td th:text="${user.email}">Email</td>
+                                            <td th:text="${user.getAllRoles()}">Email</td>
                                         </tr>
                                     </tbody>
                                 </table>

@@ -5,10 +5,6 @@
 
 <body>
 <div th:include="header :: head-nav" class="navbar navbar-inverse navbar-fixed-top headroom"></div>
-<h1 th:inline="text">[[${#httpServletRequest.remoteUser}]]!</h1>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
 <div class = "container-fluid">
     <div class = "row">
         <div class="col" align="center">
@@ -45,7 +41,7 @@
                         <div class="form-row align-items-center">
                             <div class="col-auto my-1">
                                 <select class="custom-select mr-sm-2" name="category">
-                                    <option th:each="category : ${categories}"
+                                    <option th:each="category : ${categoryList}"
                                             th:value="${category.nameCategory}"
                                             th:text="${category.nameCategory}">
                                     </option>
@@ -118,7 +114,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                <tr th:each="product : ${products}">
+                <tr th:each="product : ${productList}">
                     <td th:text="${product.id}">ID</td>
                     <td th:text="${product.name}">Name</td>
                     <td th:text="${product.price}">Price</td>

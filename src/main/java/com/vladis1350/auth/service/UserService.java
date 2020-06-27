@@ -5,7 +5,10 @@ import com.vladis1350.auth.bean.User;
 import com.vladis1350.auth.bean.UserRoles;
 import com.vladis1350.auth.repositories.RoleRepository;
 import com.vladis1350.auth.repositories.UserRepository;
+import com.vladis1350.repositories.interfaces.ShoppingCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +24,9 @@ public class UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private ShoppingCartRepository cartRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -42,5 +48,18 @@ public class UserService {
         }
         user.setRoles(new HashSet<>(Arrays.asList(userRole)));
         return userRepository.save(user);
+    }
+
+    public String getCurrentUsername() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
+    }
+
+    public User getCurrentAuthenticationUser() {
+        return userRepository.findByUserName(getCurrentUsername());
+    }
+
+    public User getUserByUserName(String userName) {
+        return userRepository.findByUserName(userName);
     }
 }

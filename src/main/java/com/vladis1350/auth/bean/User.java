@@ -12,14 +12,14 @@ import java.util.stream.Collectors;
 @Data
 @Entity
 @Builder
-@Table(name="users")
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_user")
+    @Column(name = "id_user")
     private Long id;
 
     @Column(name = "user_name")

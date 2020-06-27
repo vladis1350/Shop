@@ -6,9 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -16,12 +14,19 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cart implements Serializable {
+@Table(name = "user_shopping_cart")
+public class UserShoppingCart implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id_shopping_cart")
     private Long id_cart;
-    private Long id_product;
-    private Integer quantityOfGoods;
-    private BigDecimal amountOfMoney;
 
+    @Column(name = "id_product")
+    private Long id_product;
+
+    @Column(name = "quantity")
+    private Integer quantityOfGoods;
+
+    @Column(name = "summ_order")
+    private BigDecimal amountOfMoney;
 }
