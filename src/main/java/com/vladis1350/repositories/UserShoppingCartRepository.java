@@ -2,6 +2,7 @@ package com.vladis1350.repositories;
 
 import com.vladis1350.bean.UserShoppingCart;
 import com.vladis1350.configDatabase.DatabaseConnection;
+import com.vladis1350.converters.ResultSetConverter;
 import com.vladis1350.repositories.interfaces.Repositories;
 import org.springframework.stereotype.Repository;
 
@@ -42,7 +43,13 @@ public class UserShoppingCartRepository implements Repositories<UserShoppingCart
 
     @Override
     public UserShoppingCart getById(Long id) throws SQLException {
-        return null;
+        ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery("SELECT * FROM user_shopping_cart WHERE id_shopping_cart=" + id);
+        return ResultSetConverter.convertToUserShoppingCart(resultSet);
+    }
+
+    public UserShoppingCart getByProductId(Long id, Long id_cart) throws SQLException {
+        ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery("SELECT * FROM user_shopping_cart WHERE id_product=" + id + " and id_shopping_cart=" + id_cart);
+        return ResultSetConverter.convertToUserShoppingCart(resultSet);
     }
 
     @Override
@@ -52,6 +59,8 @@ public class UserShoppingCartRepository implements Repositories<UserShoppingCart
 
     @Override
     public void update(UserShoppingCart userShoppingCart) throws SQLException {
-
+        statement = databaseConnection.getDbConnection().createStatement();
+        statement.executeUpdate(" UPDATE user_shopping_cart SET quantity='" + userShoppingCart.getQuantityOfGoods() + "', summ_order='" + userShoppingCart.getAmountOfMoney() +
+                "' WHERE id_product=" + userShoppingCart.getId_product() + " and id_shopping_cart=" + userShoppingCart.getId_cart());
     }
 }

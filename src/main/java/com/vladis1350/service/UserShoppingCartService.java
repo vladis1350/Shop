@@ -24,12 +24,16 @@ public class UserShoppingCartService implements ServiceInterface<UserShoppingCar
 
     @Override
     public void update(UserShoppingCart entity) throws SQLException {
-
+        userShoppingCartRepository.update(entity);
     }
 
     @Override
     public UserShoppingCart getById(Long id) throws SQLException {
-        return null;
+        return userShoppingCartRepository.getById(id);
+    }
+
+    public UserShoppingCart getByProductId(Long id_product, Long id_cart) throws SQLException {
+        return userShoppingCartRepository.getByProductId(id_product, id_cart);
     }
 
     @Override
@@ -41,4 +45,10 @@ public class UserShoppingCartService implements ServiceInterface<UserShoppingCar
     public List<UserShoppingCart> findAll() throws SQLException {
         return null;
     }
+
+    public int getQuantityProductsInUserShoppingCart(Long id_product, Long id_cart) throws SQLException {
+        return getByProductId(id_product, id_cart).getQuantityOfGoods();
+    }
+
+
 }

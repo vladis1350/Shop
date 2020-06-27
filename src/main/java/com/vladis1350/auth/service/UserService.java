@@ -62,4 +62,9 @@ public class UserService {
     public User getUserByUserName(String userName) {
         return userRepository.findByUserName(userName);
     }
+
+    public static User erasePasswordDataBeforeResponse(User user) {
+        user.setPassword("");
+        return user;
+    }
 }

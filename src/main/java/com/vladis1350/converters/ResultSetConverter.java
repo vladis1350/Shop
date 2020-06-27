@@ -2,6 +2,7 @@ package com.vladis1350.converters;
 
 import com.vladis1350.bean.Category;
 import com.vladis1350.bean.Product;
+import com.vladis1350.bean.UserShoppingCart;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -50,6 +51,19 @@ public class ResultSetConverter {
                     .build();
         }
         return product;
+    }
+
+    public static UserShoppingCart convertToUserShoppingCart(ResultSet resultSet) throws SQLException {
+        UserShoppingCart userShoppingCart = null;
+        while (resultSet.next()) {
+            userShoppingCart = UserShoppingCart.builder()
+                    .id_cart(resultSet.getLong(1))
+                    .id_product(resultSet.getLong(2))
+                    .quantityOfGoods(resultSet.getInt(3))
+                    .amountOfMoney(resultSet.getBigDecimal(4))
+                    .build();
+        }
+        return userShoppingCart;
     }
 
     public static Category convertToCategory(ResultSet resultSet) throws SQLException {

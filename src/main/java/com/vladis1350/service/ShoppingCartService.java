@@ -1,5 +1,6 @@
 package com.vladis1350.service;
 
+import com.vladis1350.auth.service.UserService;
 import com.vladis1350.bean.ShoppingCart;
 import com.vladis1350.repositories.interfaces.ShoppingCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,11 @@ public class ShoppingCartService {
             cartRepository.save(shoppingCart);
     }
 
-    public boolean findUserById(Long id) {
-        return cartRepository.findShoppingCartByIdUser(id).isEmpty();
+    public boolean findShoppingCartByIdUser(Long id) {
+        return cartRepository.findShoppingCartByIdUser(id) == null;
+    }
+
+    public ShoppingCart findShoppingCart(Long id) {
+        return cartRepository.findShoppingCartByIdUser(id);
     }
 }
