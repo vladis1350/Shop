@@ -1,13 +1,12 @@
-package com.vladis1350.repositories;
+package com.vladis1350.shop.repositories;
 
-import com.vladis1350.bean.Product;
+import com.vladis1350.shop.bean.Product;
 import com.vladis1350.configDatabase.DatabaseConnection;
 import com.vladis1350.constants.ProductDataConstant;
-import com.vladis1350.converters.ResultSetConverter;
-import com.vladis1350.repositories.interfaces.Repositories;
+import com.vladis1350.shop.converters.ResultSetConverter;
+import com.vladis1350.shop.repositories.interfaces.Repositories;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

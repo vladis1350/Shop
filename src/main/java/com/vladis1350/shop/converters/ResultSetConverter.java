@@ -1,8 +1,8 @@
-package com.vladis1350.converters;
+package com.vladis1350.shop.converters;
 
-import com.vladis1350.bean.Category;
-import com.vladis1350.bean.Product;
-import com.vladis1350.bean.UserShoppingCart;
+import com.vladis1350.shop.bean.Category;
+import com.vladis1350.shop.bean.Product;
+import com.vladis1350.shop.bean.UserShoppingCart;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -34,6 +34,22 @@ public class ResultSetConverter {
             Long id = resultSet.getLong(1);
             String name = resultSet.getString(2);
             list.add(new Category(id, name));
+        }
+        return list;
+    }
+
+    public static List<UserShoppingCart> convertToListUserShoppingCart(ResultSet resultSet) throws SQLException {
+        List<UserShoppingCart> list = new ArrayList<>();
+        while (resultSet.next()) {
+            UserShoppingCart shoppingCart = UserShoppingCart.builder()
+                    .id_cart(resultSet.getLong(1))
+                    .id_product(resultSet.getLong(2))
+                    .product(resultSet.getString(3))
+                    .price(resultSet.getBigDecimal(4))
+                    .quantityOfGoods(resultSet.getInt(5))
+                    .amountOfMoney(resultSet.getBigDecimal(6))
+                    .build();
+            list.add(shoppingCart);
         }
         return list;
     }

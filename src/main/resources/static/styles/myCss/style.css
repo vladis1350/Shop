@@ -129,3 +129,8 @@ thead {
     border-bottom: 0;
     border-left: .3em solid transparent;
 }
+
+.table-user-product {
+    margin: 70px;
+    padding: 20px;
+}

@@ -1,8 +1,7 @@
-package com.vladis1350.service;
+package com.vladis1350.shop.service;
 
-import com.vladis1350.auth.service.UserService;
-import com.vladis1350.bean.ShoppingCart;
-import com.vladis1350.repositories.interfaces.ShoppingCartRepository;
+import com.vladis1350.shop.bean.ShoppingCart;
+import com.vladis1350.shop.repositories.interfaces.ShoppingCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

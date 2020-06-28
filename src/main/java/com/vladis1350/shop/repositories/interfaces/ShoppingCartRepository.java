@@ -1,6 +1,6 @@
-package com.vladis1350.repositories.interfaces;
+package com.vladis1350.shop.repositories.interfaces;
 
-import com.vladis1350.bean.ShoppingCart;
+import com.vladis1350.shop.bean.ShoppingCart;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

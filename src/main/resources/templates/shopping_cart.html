@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="header :: head"
+      th:with="title='Shopping Cart'"></head>
+<body>
+<div th:include="header :: head-nav" class="navbar navbar-inverse navbar-fixed-top headroom"></div>
+<table class="table table-striped table-user-product">
+    <thead>
+    <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Summ</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="userProduct : ${userProductList}">
+        <td th:text="${userProduct.product}">Product</td>
+        <td th:text="${userProduct.price}">Price</td>
+        <td th:text="${userProduct.quantityOfGoods}">Quantity</td>
+        <td th:text="${userProduct.amountOfMoney}">Summ</td>
+        <td>
+            <a th:href="@{'/editUserProduct/' + ${userProduct.id_cart} + '/' + ${userProduct.id_product}}">Edit</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a th:href="@{'/deleteUserProduct/' + ${userProduct.id_cart} + '/' + ${userProduct.id_product}}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!--<div class="container-fluid user-products">-->
+<!--    <div class="row text-primary">-->
+<!--        <div class="col-lg-3, col-sm-3 col-xs-12 mob-fix user-product-list">Название</div>-->
+<!--        <div class="col-lg-3, col-sm-3 col-xs-12 mob-fix user-product-list">Цена</div>-->
+<!--        <div class="col-lg-3, col-sm-3 col-xs-12 mob-fix user-product-list">Количество</div>-->
+<!--        <div class="col-lg-3, col-sm-3 col-xs-12 mob-fix user-product-list">Сумма</div>-->
+<!--    </div>-->
+<!--    <div th:each="userProduct : ${userProductList}" class="row">-->
+<!--        <div  class="col-lg-3 col-sm-3 col-xs-12 mob-fix user-product-list" th:text="${userProduct.product}">-->
+<!--            Название-->
+<!--        </div>-->
+<!--        <div class="col-lg-2 col-sm-2 col-xs-12 mob-fix user-product-list" th:text="${userProduct.price}">-->
+<!--            Цена-->
+<!--        </div>-->
+<!--        <div class="col-lg-1 col-sm-2 col-xs-12 mob-fix user-product-list" th:text="${userProduct.quantityOfGoods}">-->
+<!--            Количество-->
+<!--        </div>-->
+<!--        <div class="col-lg-3 col-sm-2 col-xs-12 mob-fix user-product-list" th:text="${userProduct.amountOfMoney}">-->
+<!--            Сумма-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<div th:include="header :: scripts"></div>
+</body>
+</html>

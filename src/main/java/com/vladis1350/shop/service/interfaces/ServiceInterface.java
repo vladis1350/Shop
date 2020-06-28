@@ -1,6 +1,4 @@
-package com.vladis1350.service.interfaces;
-
-import com.vladis1350.bean.Product;
+package com.vladis1350.shop.service.interfaces;
 
 import java.sql.SQLException;
 import java.util.List;

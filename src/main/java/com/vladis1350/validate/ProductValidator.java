@@ -1,6 +1,6 @@
 package com.vladis1350.validate;
 
-import com.vladis1350.bean.Product;
+import com.vladis1350.shop.bean.Product;
 import com.vladis1350.constants.DataCondition;
 
 import java.math.BigDecimal;

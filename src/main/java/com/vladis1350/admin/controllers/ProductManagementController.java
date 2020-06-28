@@ -1,11 +1,11 @@
 package com.vladis1350.admin.controllers;
 
-import com.vladis1350.bean.Product;
+import com.vladis1350.shop.bean.Product;
 import com.vladis1350.constants.EntityConstant;
 import com.vladis1350.constants.Http;
 import com.vladis1350.constants.Pages;
-import com.vladis1350.service.CategoryService;
-import com.vladis1350.service.ProductService;
+import com.vladis1350.shop.service.CategoryService;
+import com.vladis1350.shop.service.ProductService;
 import com.vladis1350.validate.ProductValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

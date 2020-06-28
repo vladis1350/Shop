@@ -1,4 +1,4 @@
-package com.vladis1350.bean;
+package com.vladis1350.shop.bean;
 
 
 import lombok.AllArgsConstructor;
@@ -23,6 +23,9 @@ public class UserShoppingCart implements Serializable {
 
     @Column(name = "id_product")
     private Long id_product;
+
+    private String product;
+    private BigDecimal price;
 
     @Column(name = "quantity")
     private Integer quantityOfGoods;

@@ -1,4 +1,4 @@
-package com.vladis1350.repositories.interfaces;
+package com.vladis1350.shop.repositories.interfaces;
 
 import java.sql.SQLException;
 import java.util.List;

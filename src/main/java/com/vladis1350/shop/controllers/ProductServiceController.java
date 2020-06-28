@@ -1,26 +1,19 @@
-package com.vladis1350.controllers;
+package com.vladis1350.shop.controllers;
 
 import com.vladis1350.auth.service.UserAccessService;
 import com.vladis1350.auth.service.UserService;
-import com.vladis1350.bean.Product;
+import com.vladis1350.shop.bean.Product;
 import com.vladis1350.constants.EntityConstant;
 import com.vladis1350.constants.Http;
 import com.vladis1350.constants.Pages;
-import com.vladis1350.service.CategoryService;
-import com.vladis1350.service.ProductService;
-import com.vladis1350.validate.ProductValidator;
+import com.vladis1350.shop.service.CategoryService;
+import com.vladis1350.shop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -35,9 +28,6 @@ public class ProductServiceController {
 
     @Autowired
     private UserAccessService userAccessService;
-
-    @Autowired
-    private UserService userService;
 
     @GetMapping(value = Http.HOME)
     public ModelAndView viewHomePage() throws SQLException {

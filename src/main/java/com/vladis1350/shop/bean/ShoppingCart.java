@@ -1,22 +1,26 @@
 package com.vladis1350.shop.bean;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
 @Data
+
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="shopping_cart")
-public class ShopingCart {
+@Entity
+@Builder
+@Table(name = "shopping_carts")
+public class ShoppingCart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_cart")
+    @Column(name = "shopping_cart_id")
     private Long id;
 
-    private Long user_id;
+    @Column(name = "id_user")
+    private Long idUser;
 }

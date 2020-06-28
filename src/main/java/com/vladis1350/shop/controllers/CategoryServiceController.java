@@ -1,10 +1,10 @@
-package com.vladis1350.controllers;
+package com.vladis1350.shop.controllers;
 
-import com.vladis1350.bean.Category;
+import com.vladis1350.shop.bean.Category;
 import com.vladis1350.constants.EntityConstant;
 import com.vladis1350.constants.Http;
 import com.vladis1350.constants.Pages;
-import com.vladis1350.service.CategoryService;
+import com.vladis1350.shop.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

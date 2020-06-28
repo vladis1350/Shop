@@ -33,8 +33,8 @@
                                       th:unless="${IS_AUTHENTICATED}">SIGN IN</a></li>
                 <li class="active"><a class="btn" th:href="@{/signUp}"
                                       th:unless="${IS_AUTHENTICATED}"> SIGN UP</a></li>
-                <li class="active"><a class="btn" href="#" th:inline="text"
-                                      th:if="${IS_AUTHENTICATED}" name="userLogin">[[${#httpServletRequest.remoteUser}]]</a></li>
+                <li class="active"><a class="btn" href="shopping_cart" th:inline="text"
+                                      th:if="${IS_AUTHENTICATED}">[[${#httpServletRequest.remoteUser}]]</a></li>
                 <li class="active"><a class="btn" th:href="@{/logout}"
                                       th:if="${IS_AUTHENTICATED}">LOGOUT</a></li>
             </ul>

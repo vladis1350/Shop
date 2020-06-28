@@ -1,20 +1,24 @@
-package com.vladis1350.controllers;
+package com.vladis1350.shop.controllers;
 
 import com.vladis1350.auth.bean.User;
+import com.vladis1350.auth.service.UserAccessService;
 import com.vladis1350.auth.service.UserService;
-import com.vladis1350.bean.Product;
-import com.vladis1350.bean.ShoppingCart;
-import com.vladis1350.bean.UserShoppingCart;
+import com.vladis1350.shop.bean.Product;
+import com.vladis1350.shop.bean.ShoppingCart;
+import com.vladis1350.shop.bean.UserShoppingCart;
 import com.vladis1350.constants.Http;
 import com.vladis1350.constants.Pages;
-import com.vladis1350.service.ProductService;
-import com.vladis1350.service.ShoppingCartService;
-import com.vladis1350.service.UserShoppingCartService;
+import com.vladis1350.shop.service.ProductService;
+import com.vladis1350.shop.service.ShoppingCartService;
+import com.vladis1350.shop.service.UserShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -33,6 +37,9 @@ public class CartServiceController {
 
     @Autowired
     private ShoppingCartService cartService;
+
+    @Autowired
+    private UserAccessService userAccessService;
 
     @PostMapping(value = Http.ADD_TO_CART + "/{id}")
     public String addProductToCart(
@@ -64,5 +71,28 @@ public class CartServiceController {
             userShoppingCartService.save(userShoppingCart);
         }
         return Pages.REDIRECT + Pages.HOME;
+    }
+
+    @GetMapping(value = "/shopping_cart")
+    public ModelAndView showUserShoppingCart() throws SQLException {
+        ModelAndView mod = new ModelAndView("shopping_cart");
+        User user = userService.getCurrentAuthenticationUser();
+        Long idShoppingCart = cartService.findShoppingCart(user.getId()).getId();
+        mod.addObject("IS_AUTHENTICATED", userAccessService.isCurrentUserAuthenticated());
+        mod.addObject("userProductList", userShoppingCartService.findAllById(idShoppingCart));
+        return mod;
+    }
+
+    @GetMapping(value = "/deleteUserProduct/{id_cart}/{id_product}")
+    public ModelAndView deleteUserProduct(@PathVariable(name = "id_cart") Long id_cart,
+                                          @PathVariable(name = "id_product") Long id_product) throws SQLException {
+        ModelAndView mod = new ModelAndView();
+        User user = userService.getCurrentAuthenticationUser();
+        Long idShoppingCart = cartService.findShoppingCart(user.getId()).getId();
+        userShoppingCartService.remove(id_cart, id_product);
+//        mod.addObject("IS_AUTHENTICATED", userAccessService.isCurrentUserAuthenticated());
+        mod.addObject("userProductList", userShoppingCartService.findAllById(idShoppingCart));
+        mod.setViewName(Pages.REDIRECT + "shopping_cart");
+        return mod;
     }
 }

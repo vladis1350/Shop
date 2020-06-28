@@ -1,9 +1,9 @@
-package com.vladis1350.repositories;
+package com.vladis1350.shop.repositories;
 
-import com.vladis1350.bean.UserShoppingCart;
+import com.vladis1350.shop.bean.UserShoppingCart;
 import com.vladis1350.configDatabase.DatabaseConnection;
-import com.vladis1350.converters.ResultSetConverter;
-import com.vladis1350.repositories.interfaces.Repositories;
+import com.vladis1350.shop.converters.ResultSetConverter;
+import com.vladis1350.shop.repositories.interfaces.Repositories;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -38,7 +38,20 @@ public class UserShoppingCartRepository implements Repositories<UserShoppingCart
 
     @Override
     public List<UserShoppingCart> findAll() throws SQLException {
-        return null;
+        ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(
+                "SELECT product.product_name, product.price, user_shopping_cart.quantity, user_shopping_cart.summ_order   as category " +
+                        "FROM product INNER JOIN user_shopping_cart ON product.id_product=user_shopping_cart.id_product " +
+                        "WHERE product.id_product=user_shopping_cart.id_product");
+        return ResultSetConverter.convertToListUserShoppingCart(resultSet);
+    }
+
+
+    public List<UserShoppingCart> findAllById(Long id) throws SQLException {
+        ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(
+                "SELECT user_shopping_cart.id_shopping_cart, user_shopping_cart.id_product, product.product_name, product.price, user_shopping_cart.quantity, user_shopping_cart.summ_order " +
+                        "FROM product INNER JOIN user_shopping_cart ON product.id_product=user_shopping_cart.id_product " +
+                        "WHERE product.id_product=user_shopping_cart.id_product and user_shopping_cart.id_shopping_cart=" + id);
+        return ResultSetConverter.convertToListUserShoppingCart(resultSet);
     }
 
     @Override
@@ -54,7 +67,13 @@ public class UserShoppingCartRepository implements Repositories<UserShoppingCart
 
     @Override
     public void delete(Long id) throws SQLException {
+        statement = databaseConnection.getDbConnection().createStatement();
+        statement.executeUpdate(" DELETE FROM user_shopping_cart WHERE id_product=" + id);
+    }
 
+    public void deleteProductFromCart(Long id_cart, Long id_product) throws SQLException {
+        statement = databaseConnection.getDbConnection().createStatement();
+        statement.executeUpdate(" DELETE FROM user_shopping_cart WHERE id_shopping_cart=" + id_cart + " and id_product=" + id_product);
     }
 
     @Override

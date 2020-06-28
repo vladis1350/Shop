@@ -1,20 +1,11 @@
 package com.vladis1350.admin.controllers;
 
 import com.vladis1350.auth.repositories.UserRepository;
-import com.vladis1350.bean.Product;
-import com.vladis1350.constants.EntityConstant;
-import com.vladis1350.constants.Http;
-import com.vladis1350.constants.Pages;
-import com.vladis1350.service.CategoryService;
-import com.vladis1350.service.ProductService;
-import com.vladis1350.validate.ProductValidator;
+import com.vladis1350.shop.service.CategoryService;
+import com.vladis1350.shop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.SQLException;

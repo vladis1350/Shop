@@ -1,4 +1,4 @@
-package com.vladis1350.bean;
+package com.vladis1350.shop.bean;
 
 import lombok.*;
 import org.hibernate.validator.constraints.Length;

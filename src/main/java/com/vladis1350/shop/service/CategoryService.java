@@ -1,8 +1,8 @@
-package com.vladis1350.service;
+package com.vladis1350.shop.service;
 
-import com.vladis1350.bean.Category;
-import com.vladis1350.repositories.CategoryRepository;
-import com.vladis1350.service.interfaces.ServiceInterface;
+import com.vladis1350.shop.bean.Category;
+import com.vladis1350.shop.repositories.CategoryRepository;
+import com.vladis1350.shop.service.interfaces.ServiceInterface;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;

@@ -1,9 +1,8 @@
-package com.vladis1350.service;
+package com.vladis1350.shop.service;
 
-import com.vladis1350.bean.Category;
-import com.vladis1350.bean.Product;
-import com.vladis1350.repositories.ProductRepository;
-import com.vladis1350.service.interfaces.ServiceInterface;
+import com.vladis1350.shop.bean.Product;
+import com.vladis1350.shop.repositories.ProductRepository;
+import com.vladis1350.shop.service.interfaces.ServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
