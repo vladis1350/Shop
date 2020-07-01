@@ -4,7 +4,7 @@ import com.vladis1350.shop.bean.Category;
 import com.vladis1350.constants.EntityConstant;
 import com.vladis1350.constants.Http;
 import com.vladis1350.constants.Pages;
-import com.vladis1350.shop.service.CategoryService;
+import com.vladis1350.shop.service.CategoryMyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +18,7 @@ import java.sql.SQLException;
 public class CategoryServiceController {
 
     @Autowired
-    private CategoryService categoryService;
+    private CategoryMyService categoryService;
 
     @GetMapping(value = Http.NEW_CATEGORY)
     public String showNewCategoryForm(Model model) throws SQLException {

@@ -18,4 +18,6 @@ public class SortingOptions {
 
     public static final String ORDER_DISCOUNT = "orderDiscount";
     public static final String REVERSE_ORDER_DISCOUNT = "reverseOrderDiscount";
+
+    private SortingOptions() {}
 }

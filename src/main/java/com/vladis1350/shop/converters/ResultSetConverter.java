@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ResultSetConverter {
-    public ResultSetConverter() {
-    }
 
     public static List<Product> convertToListProduct(ResultSet resultSet) throws SQLException {
         List<Product> list = new ArrayList<>();
@@ -42,8 +40,8 @@ public class ResultSetConverter {
         List<UserShoppingCart> list = new ArrayList<>();
         while (resultSet.next()) {
             UserShoppingCart shoppingCart = UserShoppingCart.builder()
-                    .id_cart(resultSet.getLong(1))
-                    .id_product(resultSet.getLong(2))
+                    .idCart(resultSet.getLong(1))
+                    .idProduct(resultSet.getLong(2))
                     .product(resultSet.getString(3))
                     .price(resultSet.getBigDecimal(4))
                     .quantityOfGoods(resultSet.getInt(5))
@@ -73,8 +71,8 @@ public class ResultSetConverter {
         UserShoppingCart userShoppingCart = null;
         while (resultSet.next()) {
             userShoppingCart = UserShoppingCart.builder()
-                    .id_cart(resultSet.getLong(1))
-                    .id_product(resultSet.getLong(2))
+                    .idCart(resultSet.getLong(1))
+                    .idProduct(resultSet.getLong(2))
                     .quantityOfGoods(resultSet.getInt(3))
                     .amountOfMoney(resultSet.getBigDecimal(4))
                     .build();

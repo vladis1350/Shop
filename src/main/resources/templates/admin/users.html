@@ -63,8 +63,8 @@
                                     <tbody>
                                         <tr th:each="user : ${userList}">
                                             <td th:text="${user.id}">#</td>
-                                            <td th:text="${user.first_name}">First Name</td>
-                                            <td th:text="${user.last_name}">Last Name</td>
+                                            <td th:text="${user.firstName}">First Name</td>
+                                            <td th:text="${user.lastName}">Last Name</td>
                                             <td th:text="${user.userName}">UserName</td>
                                             <td th:text="${user.email}">Email</td>
                                             <td th:text="${user.getAllRoles()}">Email</td>

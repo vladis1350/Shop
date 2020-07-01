@@ -1,11 +1,16 @@
 package com.vladis1350.shop.bean;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
 
-import javax.persistence.*;
-import javax.validation.constraints.Digits;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -37,21 +42,5 @@ public class Product implements Serializable {
 
     @Column(name = "description")
     private String description;
-
-//    public Product(String name, BigDecimal price, String category, BigDecimal discount, String description) {
-//        this.name = name;
-//        this.price = price;
-//        this.category = category;
-//        this.discount = discount;
-//    }
-//
-//    public Product(Long id, String name, BigDecimal price, String category, BigDecimal discount, String description) {
-//        this.id = id;
-//        this.name = name;
-//        this.price = price;
-//        this.category = category;
-//        this.discount = discount;
-//    }
-
 
 }

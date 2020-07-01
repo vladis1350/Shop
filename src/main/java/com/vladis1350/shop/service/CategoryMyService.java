@@ -2,19 +2,18 @@ package com.vladis1350.shop.service;
 
 import com.vladis1350.shop.bean.Category;
 import com.vladis1350.shop.repositories.CategoryRepository;
-import com.vladis1350.shop.service.interfaces.ServiceInterface;
+import com.vladis1350.shop.service.interfaces.MyServiceInterface;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
 
 @Service
-public class CategoryService implements ServiceInterface<Category, Long> {
-    private final CategoryRepository categoryRepository;
+public class CategoryMyService implements MyServiceInterface<Category> {
 
-    public CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public void save(Category category) throws SQLException {

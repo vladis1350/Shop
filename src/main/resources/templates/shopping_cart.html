@@ -20,9 +20,9 @@
         <td th:text="${userProduct.quantityOfGoods}">Quantity</td>
         <td th:text="${userProduct.amountOfMoney}">Summ</td>
         <td>
-            <a th:href="@{'/editUserProduct/' + ${userProduct.id_cart} + '/' + ${userProduct.id_product}}">Edit</a>
+            <a th:href="@{'/editUserProduct/' + ${userProduct.getIdCart()} + '/' + ${userProduct.getIdProduct()}}">Edit</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <a th:href="@{'/deleteUserProduct/' + ${userProduct.id_cart} + '/' + ${userProduct.id_product}}">Delete</a>
+            <a th:href="@{'/deleteUserProduct/' + ${userProduct.getIdCart()} + '/' + ${userProduct.getIdProduct()}}">Delete</a>
         </td>
     </tr>
     </tbody>

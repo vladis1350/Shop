@@ -1,7 +1,6 @@
 package com.vladis1350.auth.controllers;
 
 import com.vladis1350.auth.bean.User;
-import com.vladis1350.auth.service.UserAccessService;
 import com.vladis1350.auth.service.UserService;
 import com.vladis1350.validate.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +41,10 @@ public class RegistrationController {
         if (!UserValidator.validateUserName(user.getUserName())) {
             mod.addObject("userNameMessage", "Логин должен быть не менее 5-х символов.");
         }
-        if (!UserValidator.validateFirstName(user.getFirst_name())) {
+        if (!UserValidator.validateFirstName(user.getFirstName())) {
             mod.addObject("firstNameMessage", "Введите имя более 3-x символов.");
         }
-        if (!UserValidator.validateLastName(user.getLast_name())) {
+        if (!UserValidator.validateLastName(user.getLastName())) {
             mod.addObject("lastNameMessage", "Введите фамилию более 3-х символов.");
         }
         if (!UserValidator.validatePassword(user.getPassword())) {
@@ -55,10 +54,12 @@ public class RegistrationController {
         if (!UserValidator.validateEmail(user.getEmail())) {
             mod.addObject("emailMessage", "Не верный Email.");
         }
-        if (UserValidator.checkValidateDataUser(user)) {
+        if (UserValidator.checkValidateDataUser(user) &&
+                (!confPassword.isPresent() || user.getPassword().equals(confPassword.get()))) {
             userService.saveUser(user, Optional.empty());
             mod.addObject("successRegistration", "Пользователь успешно зарегистрирован!");
-            mod.setViewName("redirect:/signIn");
+            mod.addObject("user", new User());
+            mod.setViewName("signUp");
         }
         return mod;
     }

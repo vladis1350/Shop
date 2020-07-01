@@ -12,7 +12,13 @@
     <artifactId>ShoppingCenter</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ShoppingCenter</name>
-    <description>Demo project for Spring Boot</description>
+
+    <properties>
+        <sonar.projectKey>vladis1350_Shop</sonar.projectKey>
+        <sonar.organization>vladis1350-1</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.login>482c4722b5c49e58ce7137ca62a5c982b297f2f1</sonar.login>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -39,11 +45,7 @@
             <version>8.0.20</version>
         </dependency>
 
-        <!--        <dependency>-->
-<!--            <groupId>com.h2database</groupId>-->
-<!--            <artifactId>h2</artifactId>-->
-<!--            <scope>runtime</scope>-->
-<!--        </dependency>-->
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

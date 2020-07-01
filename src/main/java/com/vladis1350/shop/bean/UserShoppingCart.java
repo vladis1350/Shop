@@ -19,10 +19,10 @@ public class UserShoppingCart implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id_shopping_cart")
-    private Long id_cart;
+    private Long idCart;
 
     @Column(name = "id_product")
-    private Long id_product;
+    private Long idProduct;
 
     private String product;
     private BigDecimal price;

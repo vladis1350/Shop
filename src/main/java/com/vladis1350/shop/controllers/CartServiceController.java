@@ -8,12 +8,11 @@ import com.vladis1350.shop.bean.ShoppingCart;
 import com.vladis1350.shop.bean.UserShoppingCart;
 import com.vladis1350.constants.Http;
 import com.vladis1350.constants.Pages;
-import com.vladis1350.shop.service.ProductService;
+import com.vladis1350.shop.service.ProductMyService;
 import com.vladis1350.shop.service.ShoppingCartService;
-import com.vladis1350.shop.service.UserShoppingCartService;
+import com.vladis1350.shop.service.UserShoppingCartMyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,10 +26,10 @@ import java.sql.SQLException;
 public class CartServiceController {
 
     @Autowired
-    private UserShoppingCartService userShoppingCartService;
+    private UserShoppingCartMyService userShoppingCartService;
 
     @Autowired
-    private ProductService productService;
+    private ProductMyService productService;
 
     @Autowired
     private UserService userService;
@@ -57,15 +56,15 @@ public class CartServiceController {
         if (userShoppingCartService.getByProductId(product.getId(), idShoppingCart) != null) {
             int quantityInBasket = userShoppingCartService.getQuantityProductsInUserShoppingCart(product.getId(), idShoppingCart);
             UserShoppingCart shoppingCart = UserShoppingCart.builder()
-                    .id_cart(idShoppingCart)
-                    .id_product(product.getId())
+                    .idCart(idShoppingCart)
+                    .idProduct(product.getId())
                     .quantityOfGoods(count+quantityInBasket)
                     .amountOfMoney(product.getPrice().multiply(BigDecimal.valueOf(count+quantityInBasket))).build();
             userShoppingCartService.update(shoppingCart);
         } else {
             UserShoppingCart userShoppingCart = UserShoppingCart.builder()
-                    .id_cart(cartService.findShoppingCart(user.getId()).getId())
-                    .id_product(product.getId())
+                    .idCart(cartService.findShoppingCart(user.getId()).getId())
+                    .idProduct(product.getId())
                     .quantityOfGoods(count)
                     .amountOfMoney(product.getPrice().multiply(BigDecimal.valueOf(count))).build();
             userShoppingCartService.save(userShoppingCart);
@@ -84,13 +83,12 @@ public class CartServiceController {
     }
 
     @GetMapping(value = "/deleteUserProduct/{id_cart}/{id_product}")
-    public ModelAndView deleteUserProduct(@PathVariable(name = "id_cart") Long id_cart,
-                                          @PathVariable(name = "id_product") Long id_product) throws SQLException {
+    public ModelAndView deleteUserProduct(@PathVariable(name = "id_cart") Long idCart,
+                                          @PathVariable(name = "id_product") Long idProduct) throws SQLException {
         ModelAndView mod = new ModelAndView();
         User user = userService.getCurrentAuthenticationUser();
         Long idShoppingCart = cartService.findShoppingCart(user.getId()).getId();
-        userShoppingCartService.remove(id_cart, id_product);
-//        mod.addObject("IS_AUTHENTICATED", userAccessService.isCurrentUserAuthenticated());
+        userShoppingCartService.remove(idCart, idProduct);
         mod.addObject("userProductList", userShoppingCartService.findAllById(idShoppingCart));
         mod.setViewName(Pages.REDIRECT + "shopping_cart");
         return mod;

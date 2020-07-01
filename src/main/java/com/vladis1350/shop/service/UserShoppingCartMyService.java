@@ -2,18 +2,18 @@ package com.vladis1350.shop.service;
 
 import com.vladis1350.shop.bean.UserShoppingCart;
 import com.vladis1350.shop.repositories.UserShoppingCartRepository;
-import com.vladis1350.shop.service.interfaces.ServiceInterface;
+import com.vladis1350.shop.service.interfaces.MyServiceInterface;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
 
 @Service
-public class UserShoppingCartService implements ServiceInterface<UserShoppingCart, Long> {
+public class UserShoppingCartMyService implements MyServiceInterface<UserShoppingCart> {
     private final UserShoppingCartRepository userShoppingCartRepository;
 
 
-    public UserShoppingCartService(UserShoppingCartRepository userShoppingCartRepository) {
+    public UserShoppingCartMyService(UserShoppingCartRepository userShoppingCartRepository) {
         this.userShoppingCartRepository = userShoppingCartRepository;
     }
 
@@ -32,8 +32,8 @@ public class UserShoppingCartService implements ServiceInterface<UserShoppingCar
         return userShoppingCartRepository.getById(id);
     }
 
-    public UserShoppingCart getByProductId(Long id_product, Long id_cart) throws SQLException {
-        return userShoppingCartRepository.getByProductId(id_product, id_cart);
+    public UserShoppingCart getByProductId(Long idProduct, Long idCart) throws SQLException {
+        return userShoppingCartRepository.getByProductId(idProduct, idCart);
     }
 
     @Override
@@ -41,8 +41,8 @@ public class UserShoppingCartService implements ServiceInterface<UserShoppingCar
         userShoppingCartRepository.delete(id);
     }
 
-    public void remove(Long id_cart, Long id_product) throws SQLException {
-        userShoppingCartRepository.deleteProductFromCart(id_cart, id_product);
+    public void remove(Long idCart, Long idProduct) throws SQLException {
+        userShoppingCartRepository.deleteProductFromCart(idCart, idProduct);
     }
 
     @Override
@@ -54,8 +54,8 @@ public class UserShoppingCartService implements ServiceInterface<UserShoppingCar
         return userShoppingCartRepository.findAllById(id);
     }
 
-    public int getQuantityProductsInUserShoppingCart(Long id_product, Long id_cart) throws SQLException {
-        return getByProductId(id_product, id_cart).getQuantityOfGoods();
+    public int getQuantityProductsInUserShoppingCart(Long idProduct, Long idCart) throws SQLException {
+        return getByProductId(idProduct, idCart).getQuantityOfGoods();
     }
 
 

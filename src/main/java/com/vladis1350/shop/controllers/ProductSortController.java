@@ -5,8 +5,8 @@ import com.vladis1350.constants.EntityConstant;
 import com.vladis1350.constants.Http;
 import com.vladis1350.constants.Pages;
 import com.vladis1350.constants.SortingOptions;
-import com.vladis1350.shop.service.CategoryService;
-import com.vladis1350.shop.service.ProductService;
+import com.vladis1350.shop.service.CategoryMyService;
+import com.vladis1350.shop.service.ProductMyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,10 +22,10 @@ import java.util.List;
 public class ProductSortController {
 
     @Autowired
-    private ProductService productService;
+    private ProductMyService productService;
 
     @Autowired
-    private CategoryService categoryService;
+    private CategoryMyService categoryService;
 
     @PostMapping(value = Http.SORTING_NAME)
     public String sortingProductsByName(@ModelAttribute("sortByName") String variable, Model model) throws SQLException {
@@ -42,7 +42,7 @@ public class ProductSortController {
 
     @PostMapping(value = Http.SORTING_PRICE)
     public String sortingProductsByPrice(@ModelAttribute("sortByPrice") String variable, Model model) throws SQLException {
-        List<Product> productList = (List<Product>)productService.findAll();
+        List<Product> productList = productService.findAll();
         if (variable.equals(SortingOptions.ORDER_PRICE)) {
             productList.sort(Comparator.comparing(Product::getPrice));
         } else if (variable.equals(SortingOptions.REVERSE_ORDER_PRICE)){
@@ -55,7 +55,7 @@ public class ProductSortController {
 
     @PostMapping(value = Http.SORTING_CATEGORY)
     public String sortingProductsByCategory(@ModelAttribute("sortByCategory") String variable, Model model) throws SQLException {
-        List<Product> productList = (List<Product>)productService.findAll();
+        List<Product> productList = productService.findAll();
         if (variable.equals(SortingOptions.ORDER_CATEGORY)) {
             productList.sort(Comparator.comparing(Product::getCategory));
         } else if (variable.equals(SortingOptions.REVERSE_ORDER_CATEGORY)){
@@ -68,7 +68,7 @@ public class ProductSortController {
 
     @PostMapping(value = Http.SORTING_DISCOUNT)
     public String sortingProductsByDiscount(@ModelAttribute("sortByDiscount") String variable, Model model) throws SQLException {
-        List<Product> productList = (List<Product>) productService.findAll();
+        List<Product> productList = productService.findAll();
         if (variable.equals(SortingOptions.ORDER_DISCOUNT)) {
             productList.sort(Comparator.comparing(Product::getDiscount));
         } else if (variable.equals(SortingOptions.REVERSE_ORDER_DISCOUNT)){

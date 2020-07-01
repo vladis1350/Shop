@@ -8,7 +8,7 @@ public class UserValidator {
 
     private static EmailValidator emailValidator = new EmailValidator();
 
-    public UserValidator(){}
+    private UserValidator(){}
 
     public static boolean validateUserName(String userName) {
         return (userName != null && userName.length() >= DataCondition.MIN_LENGTH_USER_NAME &&
@@ -35,8 +35,8 @@ public class UserValidator {
 
     public static boolean checkValidateDataUser(User user) {
         return validateUserName(user.getUserName()) &&
-                validateFirstName(user.getFirst_name()) &&
-                validateLastName(user.getLast_name()) &&
+                validateFirstName(user.getFirstName()) &&
+                validateLastName(user.getLastName()) &&
                 validateEmail(user.getEmail()) &&
                 validatePassword(user.getPassword());
     }

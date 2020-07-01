@@ -1,9 +1,9 @@
 package com.vladis1350.shop.repositories;
 
 import com.vladis1350.shop.bean.Category;
-import com.vladis1350.configDatabase.DatabaseConnection;
+import com.vladis1350.dao.DatabaseConnection;
 import com.vladis1350.shop.converters.ResultSetConverter;
-import com.vladis1350.shop.repositories.interfaces.Repositories;
+import com.vladis1350.shop.repositories.interfaces.MyRepositoryInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -17,18 +17,21 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class CategoryRepository<T extends Category> implements Repositories<Category, Long> {
-    private static final Logger logger = LoggerFactory.getLogger(ProductRepository.class);
+public class CategoryRepository implements MyRepositoryInterface<Category> {
+    private static final Logger logger = LoggerFactory.getLogger(CategoryRepository.class);
     private Statement statement;
     private DatabaseConnection databaseConnection = new DatabaseConnection();
-    private PreparedStatement preparedStatement;
 
     @Override
     public void save(Category category) throws SQLException {
         String insert = "INSERT INTO categories (name_category)  VALUES(?)";
-        preparedStatement = databaseConnection.getDbConnection().prepareStatement(insert);
+        PreparedStatement preparedStatement = databaseConnection.getDbConnection().prepareStatement(insert);
         preparedStatement.setString(1, category.getNameCategory());
-        preparedStatement.execute();
+        if (!preparedStatement.execute()){
+            logger.info("Category: " + category.getNameCategory() + " successfully added!");
+        } else {
+            logger.error("Category: " + category.getNameCategory() + " has not been added!");
+        }
     }
 
     @Override

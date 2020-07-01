@@ -1,8 +1,8 @@
 package com.vladis1350.admin.controllers;
 
 import com.vladis1350.auth.repositories.UserRepository;
-import com.vladis1350.shop.service.CategoryService;
-import com.vladis1350.shop.service.ProductService;
+import com.vladis1350.shop.service.CategoryMyService;
+import com.vladis1350.shop.service.ProductMyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +17,10 @@ public class AdminViewController {
     private UserRepository userRepository;
 
     @Autowired
-    private ProductService productService;
+    private ProductMyService productService;
 
     @Autowired
-    private CategoryService categoryService;
+    private CategoryMyService categoryService;
 
     @GetMapping("/admin/users")
     public ModelAndView showAdminPanel() {

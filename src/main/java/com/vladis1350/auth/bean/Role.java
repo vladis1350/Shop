@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import static javax.persistence.GenerationType.SEQUENCE;
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -24,6 +22,6 @@ public class Role {
 
     @Column(name = "role_name", unique = true)
     @Enumerated(value = EnumType.STRING)
-    private UserRoles role;
+    private UserRoles roleName;
 
 }

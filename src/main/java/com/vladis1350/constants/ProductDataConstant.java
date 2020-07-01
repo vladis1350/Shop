@@ -9,4 +9,6 @@ public class ProductDataConstant {
     public static final String PRODUCT_DISCOUNT = "discount";
     public static final String PRODUCT_PRICE = "price";
 
+    private ProductDataConstant() {}
+
 }

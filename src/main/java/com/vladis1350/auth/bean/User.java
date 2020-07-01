@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +27,10 @@ public class User {
     private String userName;
 
     @Column(name = "first_name")
-    private String first_name;
+    private String firstName;
 
     @Column(name = "last_name")
-    private String last_name;
+    private String lastName;
 
     @Column(name = "password")
     private String password;
@@ -46,7 +47,7 @@ public class User {
 
     public String getAllRoles() {
         return roles.stream()
-                .map(role -> role.getRole().name())
+                .map(role -> role.getRoleName().name())
                 .collect(Collectors.joining(", ", "{", "}"));
     }
 }

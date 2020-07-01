@@ -32,7 +32,6 @@ public class UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public User findUserByUserName(String userName) {
-//        return erasePasswordDataBeforeResponse(userRepository.findByUserName(userName)); todo: delete user password data if necessary
         return userRepository.findByUserName(userName);
     }
 
@@ -41,7 +40,7 @@ public class UserService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(true);
 
-        Role userRole = roleRepository.findByRole(newUserRole);
+        Role userRole = roleRepository.findByRoleName(newUserRole);
         if (userRole == null) {
 
             userRole = roleRepository.save(new Role(null, newUserRole));

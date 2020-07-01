@@ -2,7 +2,7 @@ package com.vladis1350.shop.service;
 
 import com.vladis1350.shop.bean.Product;
 import com.vladis1350.shop.repositories.ProductRepository;
-import com.vladis1350.shop.service.interfaces.ServiceInterface;
+import com.vladis1350.shop.service.interfaces.MyServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,41 +12,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ProductService implements ServiceInterface<Product, Long> {
-    private ProductRepository repositories = new ProductRepository();
+public class ProductMyService implements MyServiceInterface<Product> {
 
     @Autowired
-    public void setRepositories(ProductRepository<Product> repositories) {
-        this.repositories = repositories;
-    }
+    private ProductRepository productRepository;
 
     @Override
     public void save(Product product) throws SQLException {
-        this.repositories.save(product);
+        this.productRepository.save(product);
     }
 
     @Override
     public void update(Product product) throws SQLException {
-        this.repositories.update(product);
+        this.productRepository.update(product);
     }
 
     @Override
     public Product getById(Long id) throws SQLException {
-        return this.repositories.getById(id);
+        return this.productRepository.getById(id);
     }
 
     @Override
     public void remove(Long id) throws SQLException {
-        this.repositories.delete(id);
+        this.productRepository.delete(id);
     }
 
     @Override
     public List<Product> findAll() throws SQLException {
-        return repositories.findAll();
+        return productRepository.findAll();
     }
 
     public List<Product> findAllByCategory(String category) throws SQLException {
-        Iterable<Product> products = repositories.findAll();
+        Iterable<Product> products = productRepository.findAll();
         List<Product> resultFilter = new ArrayList<>();
         for (Product product: products) {
             if (product.getCategory().equals(category)) {
@@ -56,11 +53,11 @@ public class ProductService implements ServiceInterface<Product, Long> {
         return resultFilter;
     }
 
-    public Product findByProductName(String product_name) throws SQLException {
-        return repositories.findByProductName(product_name);
+    public Product findByProductName(String productName) throws SQLException {
+        return productRepository.findByProductName(productName);
     }
 
-    public void changeDiscountForCategories(Long id_category, BigDecimal discount) throws SQLException {
-        repositories.changeDiscountForCategories(id_category, discount);
+    public void changeDiscountForCategories(Long idCategory, BigDecimal discount) throws SQLException {
+        productRepository.changeDiscountForCategories(idCategory, discount);
     }
 }

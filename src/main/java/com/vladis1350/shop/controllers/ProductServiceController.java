@@ -1,17 +1,18 @@
 package com.vladis1350.shop.controllers;
 
 import com.vladis1350.auth.service.UserAccessService;
-import com.vladis1350.auth.service.UserService;
-import com.vladis1350.shop.bean.Product;
 import com.vladis1350.constants.EntityConstant;
 import com.vladis1350.constants.Http;
 import com.vladis1350.constants.Pages;
-import com.vladis1350.shop.service.CategoryService;
-import com.vladis1350.shop.service.ProductService;
+import com.vladis1350.shop.bean.Product;
+import com.vladis1350.shop.service.CategoryMyService;
+import com.vladis1350.shop.service.ProductMyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.SQLException;
@@ -21,10 +22,10 @@ import java.util.List;
 public class ProductServiceController {
 
     @Autowired
-    private ProductService productService;
+    private ProductMyService productService;
 
     @Autowired
-    private CategoryService categoryService;
+    private CategoryMyService categoryService;
 
     @Autowired
     private UserAccessService userAccessService;
@@ -44,8 +45,8 @@ public class ProductServiceController {
     }
 
     @PostMapping(value = Http.SEARCH)
-    public String searchProductById(@ModelAttribute(EntityConstant.ENTITY_ID_PRODUCT) Long id_product, Model model) throws SQLException {
-        Product product1 = productService.getById(id_product);
+    public String searchProductById(@ModelAttribute(EntityConstant.ENTITY_ID_PRODUCT) Long idProduct, Model model) throws SQLException {
+        Product product1 = productService.getById(idProduct);
         model.addAttribute(EntityConstant.PRODUCTS, product1);
         model.addAttribute(EntityConstant.CATEGORIES, categoryService.findAll());
         return Pages.HOME;

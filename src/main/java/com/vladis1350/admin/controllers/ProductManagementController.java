@@ -4,8 +4,8 @@ import com.vladis1350.shop.bean.Product;
 import com.vladis1350.constants.EntityConstant;
 import com.vladis1350.constants.Http;
 import com.vladis1350.constants.Pages;
-import com.vladis1350.shop.service.CategoryService;
-import com.vladis1350.shop.service.ProductService;
+import com.vladis1350.shop.service.CategoryMyService;
+import com.vladis1350.shop.service.ProductMyService;
 import com.vladis1350.validate.ProductValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,10 +20,10 @@ import java.sql.SQLException;
 public class ProductManagementController {
 
     @Autowired
-    private ProductService productService;
+    private ProductMyService productService;
 
     @Autowired
-    private CategoryService categoryService;
+    private CategoryMyService categoryService;
 
     @GetMapping(value = Http.NEW_PRODUCT)
     public ModelAndView showNewProductsForm() throws SQLException {
@@ -43,20 +43,20 @@ public class ProductManagementController {
     }
 
     @PostMapping(value = Http.SAVE_PRODUCT)
-    public ModelAndView  showProduct(@RequestParam(value = "product_name", required = false) String product_name,
+    public ModelAndView  showProduct(@RequestParam(value = "productName", required = false) String productName,
                                     @RequestParam(value = "price", required = false) BigDecimal price,
                                     @RequestParam(value = "discount", required = false) BigDecimal discount,
                                     @RequestParam(value = "category", required = false) String category,
                                     @RequestParam(value = "description", required = false) String description) throws SQLException {
         ModelAndView mod = new ModelAndView();
         Product product = Product.builder()
-                .name(product_name)
+                .name(productName)
                 .price(price)
                 .discount(discount)
                 .category(category)
                 .description(description)
                 .build();
-        Product newProduct = productService.findByProductName(product_name);
+        Product newProduct = productService.findByProductName(productName);
         if (newProduct != null) {
             mod.addObject("errorMessage", "Продукт с таким именем уже сужествует!");
             mod.addObject(EntityConstant.PRODUCTS, productService.findAll());
@@ -64,7 +64,7 @@ public class ProductManagementController {
             mod.setViewName("/admin/products");
             return mod;
         }
-        if (!ProductValidator.validateName(product_name)) {
+        if (!ProductValidator.validateName(productName)) {
             mod.addObject("errProductName", "Нзвание должно быть не менее 3-х и не более 32 символов!");
         }
         if (!ProductValidator.validatePrice(price)) {
@@ -96,8 +96,6 @@ public class ProductManagementController {
     public String saveEditProduct(@ModelAttribute(EntityConstant.UNIT_PRODUCT) Product product) throws SQLException {
         if (ProductValidator.checkValidateDataProduct(product)) {
             productService.update(product);
-        } else {
-
         }
         return Pages.REDIRECT + Pages.HOME;
     }
@@ -118,8 +116,8 @@ public class ProductManagementController {
     }
 
     @PostMapping(value = Http.SET_DISCOUNT)
-    public String setDiscountForCategory(@ModelAttribute(EntityConstant.UNIT_CATEGORY) Long id_category, BigDecimal discount) throws SQLException {
-        productService.changeDiscountForCategories(id_category, discount);
+    public String setDiscountForCategory(@ModelAttribute(EntityConstant.UNIT_CATEGORY) Long idCategory, BigDecimal discount) throws SQLException {
+        productService.changeDiscountForCategories(idCategory, discount);
         return Pages.REDIRECT + Pages.HOME;
     }
 }

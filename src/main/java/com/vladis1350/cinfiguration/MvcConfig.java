@@ -15,9 +15,9 @@ public class MvcConfig implements WebMvcConfigurer {
         return new BCryptPasswordEncoder();
     }
 
+    @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/home").setViewName("home");
-//        registry.addViewController("/").setViewName("home");
         registry.addViewController("/header").setViewName("header");
         registry.addViewController("/" + Http.ADD_TO_CART + "/**").setViewName("addToCart");
         registry.addViewController("/shopping_cart").setViewName("shopping_cart");

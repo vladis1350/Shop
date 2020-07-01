@@ -3,7 +3,7 @@ package com.vladis1350.shop.service.interfaces;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface ServiceInterface<T, Long> {
+public interface MyServiceInterface<T> {
     void save(T entity) throws SQLException;
     void update(T entity) throws SQLException;
     T getById(Long id) throws SQLException;
