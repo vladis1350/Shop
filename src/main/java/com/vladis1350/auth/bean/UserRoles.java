@@ -1,6 +1,8 @@
 package com.vladis1350.auth.bean;
 
-public enum UserRoles {
+import java.io.Serializable;
+
+public enum UserRoles implements Serializable {
     ROLE_ADMIN("Has full access"),
     ROLE_GUEST("Registered, but not participate in any courses");
 

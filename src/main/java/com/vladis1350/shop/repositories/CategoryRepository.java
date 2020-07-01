@@ -25,25 +25,30 @@ public class CategoryRepository implements MyRepositoryInterface<Category> {
     @Override
     public void save(Category category) throws SQLException {
         String insert = "INSERT INTO categories (name_category)  VALUES(?)";
-        PreparedStatement preparedStatement = databaseConnection.getDbConnection().prepareStatement(insert);
-        preparedStatement.setString(1, category.getNameCategory());
-        if (preparedStatement.execute()){
-            logger.info("Category: " + category.getNameCategory() + " successfully added!");
-        } else {
-            logger.error("Category: " + category.getNameCategory() + " has not been added!");
+        try(PreparedStatement preparedStatement = databaseConnection.getDbConnection().prepareStatement(insert)) {
+            preparedStatement.setString(1, category.getNameCategory());
+            if (preparedStatement.execute()){
+                logger.info("Category: " + category.getNameCategory() + " successfully added!");
+            } else {
+                logger.error("Category: " + category.getNameCategory() + " has not been added!");
+            }
         }
     }
 
     @Override
     public List<Category> findAll() throws SQLException {
-        ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery("SELECT * FROM categories");
-        return ResultSetConverter.convertToListCategory(resultSet);
+        String query = "SELECT * FROM categories";
+        try(ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(query)) {
+            return ResultSetConverter.convertToListCategory(resultSet);
+        }
     }
 
     @Override
     public Category getById(Long id) throws SQLException {
-        ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery("SELECT * FROM categories WHERE id_category=" + id);
-        return ResultSetConverter.convertToCategory(resultSet);
+        String query = "SELECT * FROM categories WHERE id_category=" + id;
+        try(ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(query)) {
+            return ResultSetConverter.convertToCategory(resultSet);
+        }
     }
 
     @Override

@@ -25,39 +25,43 @@ public class ProductRepository implements MyRepositoryInterface<Product> {
     public void save(Product product) throws SQLException {
         String insert = "INSERT INTO product (" + ProductDataConstant.PRODUCT_NAME + "," + ProductDataConstant.PRODUCT_PRICE + "," +
                 ProductDataConstant.PRODUCT_DESCRIPTION + "," + ProductDataConstant.PRODUCT_DISCOUNT  + "," + ProductDataConstant.PRODUCT_CATEGORY + ") VALUES(?,?,?,?,?)";
-        PreparedStatement preparedStatement = databaseConnection.getDbConnection().prepareStatement(insert);
-        preparedStatement.setString(1, product.getName());
-        preparedStatement.setString(2, String.valueOf(product.getPrice()));
-        preparedStatement.setString(3, product.getDescription());
-        preparedStatement.setString(4, String.valueOf(product.getDiscount()));
-        preparedStatement.setString(5, String.valueOf(product.getCategory()));
-
-        if(!preparedStatement.execute()) {
-            logger.info("Product: '" + product.getName() + "' successfully added!");
-        } else {
-            logger.error("Product: '" + product.getName() + "' has not been added.");
+        try(PreparedStatement preparedStatement = databaseConnection.getDbConnection().prepareStatement(insert)) {
+            preparedStatement.setString(1, product.getName());
+            preparedStatement.setString(2, String.valueOf(product.getPrice()));
+            preparedStatement.setString(3, product.getDescription());
+            preparedStatement.setString(4, String.valueOf(product.getDiscount()));
+            preparedStatement.setString(5, String.valueOf(product.getCategory()));
+            if(!preparedStatement.execute()) {
+                logger.info("Product: '" + product.getName() + "' successfully added!");
+            } else {
+                logger.error("Product: '" + product.getName() + "' has not been added.");
+            }
         }
     }
 
     @Override
     public List<Product> findAll() throws SQLException {
-        ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(
-                "SELECT id_product, product_name, price, description, discount, categories.name_category as category " +
-                        "FROM product, categories " +
-                        "WHERE product.id_category=categories.id_category");
-        return ResultSetConverter.convertToListProduct(resultSet);
+        String query = "SELECT id_product, product_name, price, description, discount, categories.name_category as category " +
+                "FROM product, categories " +
+                "WHERE product.id_category=categories.id_category";
+        try(ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(query)) {
+            return ResultSetConverter.convertToListProduct(resultSet);
+        }
     }
 
     public Product findByProductName(String productName) throws SQLException {
-        ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(
-                "SELECT * FROM product WHERE product_name = '" + productName + "'");
-        return ResultSetConverter.convertToProduct(resultSet);
+        String query = "SELECT * FROM product WHERE product_name = '" + productName + "'";
+        try(ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(query)) {
+            return ResultSetConverter.convertToProduct(resultSet);
+        }
     }
 
     @Override
     public Product getById(Long id) throws SQLException {
-        ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery("SELECT * FROM product WHERE id_product=" + id);
-        return ResultSetConverter.convertToProduct(resultSet);
+        String query = "SELECT * FROM product WHERE id_product=" + id;
+        try(ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(query)) {
+            return ResultSetConverter.convertToProduct(resultSet);
+        }
     }
 
     @Override

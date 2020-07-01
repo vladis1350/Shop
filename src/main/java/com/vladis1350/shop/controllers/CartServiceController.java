@@ -54,7 +54,7 @@ public class CartServiceController {
         Product product = productService.getById(id);
         Long idShoppingCart = cartService.findShoppingCart(user.getId()).getId();
         if (userShoppingCartService.getByProductId(product.getId(), idShoppingCart) != null) {
-            int quantityInBasket = userShoppingCartService.getQuantityProductsInUserShoppingCart(product.getId(), idShoppingCart);
+            Integer quantityInBasket = userShoppingCartService.getQuantityProductsInUserShoppingCart(product.getId(), idShoppingCart);
             UserShoppingCart shoppingCart = UserShoppingCart.builder()
                     .idCart(idShoppingCart)
                     .idProduct(product.getId())
