@@ -43,14 +43,7 @@ public class ProductMyService implements MyServiceInterface<Product> {
     }
 
     public List<Product> findAllByCategory(String category) throws SQLException {
-        Iterable<Product> products = productRepository.findAll();
-        List<Product> resultFilter = new ArrayList<>();
-        for (Product product: products) {
-            if (product.getCategory().equals(category)) {
-                resultFilter.add(product);
-            }
-        }
-        return resultFilter;
+        return productRepository.findProductByCategory(category);
     }
 
     public Product findByProductName(String productName) throws SQLException {

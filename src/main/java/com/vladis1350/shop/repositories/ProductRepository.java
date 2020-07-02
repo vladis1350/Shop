@@ -24,14 +24,14 @@ public class ProductRepository implements MyRepositoryInterface<Product> {
     @Override
     public void save(Product product) throws SQLException {
         String insert = "INSERT INTO product (" + ProductDataConstant.PRODUCT_NAME + "," + ProductDataConstant.PRODUCT_PRICE + "," +
-                ProductDataConstant.PRODUCT_DESCRIPTION + "," + ProductDataConstant.PRODUCT_DISCOUNT  + "," + ProductDataConstant.PRODUCT_CATEGORY + ") VALUES(?,?,?,?,?)";
-        try(PreparedStatement preparedStatement = databaseConnection.getDbConnection().prepareStatement(insert)) {
+                ProductDataConstant.PRODUCT_DESCRIPTION + "," + ProductDataConstant.PRODUCT_DISCOUNT + "," + ProductDataConstant.PRODUCT_CATEGORY + ") VALUES(?,?,?,?,?)";
+        try (PreparedStatement preparedStatement = databaseConnection.getDbConnection().prepareStatement(insert)) {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setString(2, String.valueOf(product.getPrice()));
             preparedStatement.setString(3, product.getDescription());
             preparedStatement.setString(4, String.valueOf(product.getDiscount()));
             preparedStatement.setString(5, String.valueOf(product.getCategory()));
-            if(!preparedStatement.execute()) {
+            if (!preparedStatement.execute()) {
                 logger.info("Product: '" + product.getName() + "' successfully added!");
             } else {
                 logger.error("Product: '" + product.getName() + "' has not been added.");
@@ -44,14 +44,14 @@ public class ProductRepository implements MyRepositoryInterface<Product> {
         String query = "SELECT id_product, product_name, price, description, discount, categories.name_category as category " +
                 "FROM product, categories " +
                 "WHERE product.id_category=categories.id_category";
-        try(ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(query)) {
+        try (ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(query)) {
             return ResultSetConverter.convertToListProduct(resultSet);
         }
     }
 
     public Product findByProductName(String productName) throws SQLException {
         String query = "SELECT * FROM product WHERE product_name = '" + productName + "'";
-        try(ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(query)) {
+        try (ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(query)) {
             return ResultSetConverter.convertToProduct(resultSet);
         }
     }
@@ -59,7 +59,7 @@ public class ProductRepository implements MyRepositoryInterface<Product> {
     @Override
     public Product getById(Long id) throws SQLException {
         String query = "SELECT * FROM product WHERE id_product=" + id;
-        try(ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(query)) {
+        try (ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(query)) {
             return ResultSetConverter.convertToProduct(resultSet);
         }
     }
@@ -77,6 +77,15 @@ public class ProductRepository implements MyRepositoryInterface<Product> {
         statement.executeUpdate(" UPDATE product SET product_name='" + product.getName() + "', price='" + product.getPrice() +
                 "', description='" + product.getDescription() + "',  discount='" + product.getDiscount() + "', id_category='" + product.getCategory() + "' " +
                 " WHERE id_product=" + product.getId() + "");
+    }
+
+    public List<Product> findProductByCategory(String categoryName) throws SQLException {
+        String query = "SELECT id_product, product_name, price, description, discount, categories.name_category as category " +
+                "FROM product, categories " +
+                "WHERE product.id_category=categories.id_category and categories.name_category=" + categoryName;
+        try (ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(query)) {
+            return ResultSetConverter.convertToListProduct(resultSet);
+        }
     }
 
     public void changeDiscountForCategories(Long idCategory, BigDecimal discount) throws SQLException {

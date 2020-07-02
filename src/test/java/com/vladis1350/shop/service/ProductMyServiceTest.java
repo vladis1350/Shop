@@ -82,8 +82,12 @@ class ProductMyServiceTest {
     }
 
     @Test
-    void findAllByCategory() {
-
+    void findAllByCategory() throws SQLException {
+        ArrayList<Product> productList = new ArrayList<>();
+        productList.add(product);
+        given(this.productRepository.findProductByCategory("Meat")).willReturn(productList);
+        List<Product> productList1 = productMyService.findAllByCategory("Meat");
+        assertThat(productList.size() == productList1.size());
     }
 
     @Test
@@ -95,7 +99,9 @@ class ProductMyServiceTest {
     }
 
     @Test
-    void changeDiscountForCategories() {
-
+    void changeDiscountForCategories() throws SQLException {
+        productRepository.changeDiscountForCategories(2L, BigDecimal.valueOf(15.30));
+        verify(productRepository, times(1))
+                .changeDiscountForCategories(2L, BigDecimal.valueOf(15.30));
     }
 }

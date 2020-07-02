@@ -12,7 +12,7 @@ public class ShoppingCartService {
     private ShoppingCartRepository cartRepository;
 
     public void saveShoppingCart(ShoppingCart shoppingCart) {
-            cartRepository.save(shoppingCart);
+        cartRepository.save(shoppingCart);
     }
 
     public boolean findShoppingCartByIdUser(Long id) {
