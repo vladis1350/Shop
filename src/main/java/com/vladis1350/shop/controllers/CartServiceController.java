@@ -3,6 +3,7 @@ package com.vladis1350.shop.controllers;
 import com.vladis1350.auth.bean.User;
 import com.vladis1350.auth.service.UserAccessService;
 import com.vladis1350.auth.service.UserService;
+import com.vladis1350.constants.SuccessConstants;
 import com.vladis1350.shop.bean.Product;
 import com.vladis1350.shop.bean.ShoppingCart;
 import com.vladis1350.shop.bean.UserShoppingCart;
@@ -55,11 +56,13 @@ public class CartServiceController {
         Long idShoppingCart = cartService.findShoppingCart(user.getId()).getId();
         if (userShoppingCartService.getByProductId(product.getId(), idShoppingCart) != null) {
             Integer quantityInBasket = userShoppingCartService.getQuantityProductsInUserShoppingCart(product.getId(), idShoppingCart);
+            int totalQuantity = count+quantityInBasket;
             UserShoppingCart shoppingCart = UserShoppingCart.builder()
                     .idCart(idShoppingCart)
                     .idProduct(product.getId())
-                    .quantityOfGoods(count+quantityInBasket)
-                    .amountOfMoney(product.getPrice().multiply(BigDecimal.valueOf(count+quantityInBasket))).build();
+                    .quantityOfGoods(totalQuantity)
+                    .amountOfMoney(product.getPrice().multiply(BigDecimal.valueOf(totalQuantity)))
+                    .build();
             userShoppingCartService.update(shoppingCart);
         } else {
             UserShoppingCart userShoppingCart = UserShoppingCart.builder()
@@ -77,7 +80,7 @@ public class CartServiceController {
         ModelAndView mod = new ModelAndView("shopping_cart");
         User user = userService.getCurrentAuthenticationUser();
         Long idShoppingCart = cartService.findShoppingCart(user.getId()).getId();
-        mod.addObject("IS_AUTHENTICATED", userAccessService.isCurrentUserAuthenticated());
+        mod.addObject(SuccessConstants.IS_AUTHENTICATED, userAccessService.isCurrentUserAuthenticated());
         mod.addObject("userProductList", userShoppingCartService.findAllById(idShoppingCart));
         return mod;
     }

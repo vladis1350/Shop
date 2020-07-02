@@ -106,18 +106,19 @@ public class ProductManagementController {
         return new ModelAndView(Pages.REDIRECT + "admin/products");
     }
 
-    @GetMapping(value = Http.DISCOUNT)
-    public String showSetDiscountForm(Model model) throws SQLException {
+    @GetMapping(value = "/admin/"+Http.DISCOUNT)
+    public ModelAndView showSetDiscountForm() throws SQLException {
+        ModelAndView mod = new ModelAndView("admin/set_discount");
         Product product = new Product();
-        model.addAttribute(EntityConstant.CATEGORIES, categoryService.findAll());
-        model.addAttribute(EntityConstant.UNIT_PRODUCT, product);
+        mod.addObject(EntityConstant.CATEGORIES, categoryService.findAll());
+        mod.addObject(EntityConstant.UNIT_PRODUCT, product);
 
-        return Pages.SET_DISCOUNT;
+        return mod;
     }
 
     @PostMapping(value = Http.SET_DISCOUNT)
-    public String setDiscountForCategory(@ModelAttribute(EntityConstant.UNIT_CATEGORY) Long idCategory, BigDecimal discount) throws SQLException {
+    public ModelAndView setDiscountForCategory(@ModelAttribute(EntityConstant.UNIT_CATEGORY) Long idCategory, BigDecimal discount) throws SQLException {
         productService.changeDiscountForCategories(idCategory, discount);
-        return Pages.REDIRECT + Pages.HOME;
+        return new ModelAndView(Pages.REDIRECT + "admin/products");
     }
 }

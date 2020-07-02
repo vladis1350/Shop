@@ -2,6 +2,10 @@
     color: red;
 }
 
+.successMessage {
+    color: green;
+}
+
 table.new-product td {
     padding: 10px;
     margin: 20px;

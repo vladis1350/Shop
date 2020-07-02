@@ -12,6 +12,8 @@ import java.util.List;
 
 public class ResultSetConverter {
 
+    private ResultSetConverter(){}
+
     public static List<Product> convertToListProduct(ResultSet resultSet) throws SQLException {
         List<Product> list = new ArrayList<>();
         while (resultSet.next()) {

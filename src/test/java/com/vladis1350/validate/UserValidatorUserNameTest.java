@@ -3,7 +3,7 @@ package com.vladis1350.validate;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-public class UserValidatorUserNameTest {
+class UserValidatorUserNameTest {
 
     @Test
     void shouldReturnFalseIfUserNameIsEmpty() {

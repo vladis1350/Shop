@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -47,7 +47,7 @@ class ShoppingCartServiceTest {
         given(this.shoppingCartRepository.findShoppingCartByIdUser(any()))
                 .willReturn(shoppingCart);
         boolean isShoppingCart = shoppingCartService.findShoppingCartByIdUser(9L);
-        assertThat(isShoppingCart).isEqualTo(false);
+        assertFalse(isShoppingCart);
     }
 
     @Test
@@ -55,6 +55,6 @@ class ShoppingCartServiceTest {
         given(this.shoppingCartRepository.findShoppingCartByIdUser(any()))
                 .willReturn(null);
         boolean isShoppingCart = shoppingCartService.findShoppingCartByIdUser(9L);
-        assertThat(isShoppingCart).isEqualTo(true);
+        assertTrue(isShoppingCart);
     }
 }

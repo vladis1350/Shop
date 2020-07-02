@@ -28,9 +28,9 @@ public class CategoryRepository implements MyRepositoryInterface<Category> {
         try(PreparedStatement preparedStatement = databaseConnection.getDbConnection().prepareStatement(insert)) {
             preparedStatement.setString(1, category.getNameCategory());
             if (preparedStatement.execute()){
-                logger.info("Category: " + category.getNameCategory() + " successfully added!");
+                logger.info("Category: '{}' successfully added!", category.getNameCategory());
             } else {
-                logger.error("Category: " + category.getNameCategory() + " has not been added!");
+                logger.error("Category: '{}' has not been added!", category.getNameCategory());
             }
         }
     }

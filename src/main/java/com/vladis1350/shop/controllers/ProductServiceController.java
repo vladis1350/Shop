@@ -4,6 +4,7 @@ import com.vladis1350.auth.service.UserAccessService;
 import com.vladis1350.constants.EntityConstant;
 import com.vladis1350.constants.Http;
 import com.vladis1350.constants.Pages;
+import com.vladis1350.constants.SuccessConstants;
 import com.vladis1350.shop.bean.Product;
 import com.vladis1350.shop.service.CategoryMyService;
 import com.vladis1350.shop.service.ProductMyService;
@@ -33,7 +34,7 @@ public class ProductServiceController {
     @GetMapping(value = Http.HOME)
     public ModelAndView viewHomePage() throws SQLException {
         ModelAndView mod = new ModelAndView("home");
-        mod.addObject("IS_AUTHENTICATED", userAccessService.isCurrentUserAuthenticated());
+        mod.addObject(SuccessConstants.IS_AUTHENTICATED, userAccessService.isCurrentUserAuthenticated());
         mod.addObject(EntityConstant.PRODUCTS, productService.findAll());
         mod.addObject(EntityConstant.CATEGORIES, categoryService.findAll());
         return mod;
@@ -47,6 +48,7 @@ public class ProductServiceController {
     @PostMapping(value = Http.SEARCH)
     public String searchProductById(@ModelAttribute(EntityConstant.ENTITY_ID_PRODUCT) Long idProduct, Model model) throws SQLException {
         Product product1 = productService.getById(idProduct);
+        model.addAttribute(SuccessConstants.IS_AUTHENTICATED, userAccessService.isCurrentUserAuthenticated());
         model.addAttribute(EntityConstant.PRODUCTS, product1);
         model.addAttribute(EntityConstant.CATEGORIES, categoryService.findAll());
         return Pages.HOME;
@@ -55,6 +57,7 @@ public class ProductServiceController {
     @PostMapping(value = Http.FILTER)
     public String filterProductByCategory(@ModelAttribute(EntityConstant.UNIT_CATEGORY) String category, Model model) throws SQLException {
         List<Product> productList = productService.findAllByCategory(category);
+        model.addAttribute(SuccessConstants.IS_AUTHENTICATED, userAccessService.isCurrentUserAuthenticated());
         model.addAttribute(EntityConstant.CATEGORIES, categoryService.findAll());
         model.addAttribute(EntityConstant.PRODUCTS, productList);
         return Pages.HOME;

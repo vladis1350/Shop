@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
@@ -27,36 +26,48 @@ public class RegistrationController {
     }
 
     @PostMapping(value = "/signUp")
-    public ModelAndView addNewUser(@Valid User user,
+    public ModelAndView addNewUser(@RequestParam(value = "userName", required = false) String userName,
+                                   @RequestParam(value = "first_name", required = false) String firstName,
+                                   @RequestParam(value = "last_name", required = false) String lastName,
+                                   @RequestParam(value = "email", required = false) String email,
+                                   @RequestParam(value = "password", required = false) String password,
                                    @RequestParam Optional<String> confPassword) {
         ModelAndView mod = new ModelAndView("/signUp");
-        User userFromDb = userService.findUserByUserName(user.getUserName());
+        User userFromDb = userService.findUserByUserName(userName);
+        User newUser = User.builder()
+                .userName(userName)
+                .firstName(firstName)
+                .lastName(lastName)
+                .email(email)
+                .password(password)
+                .build();
+
         if (userFromDb != null) {
             mod.addObject("userNameMessage", "Пользователь с таким именем уже существует!");
             return mod;
         }
-        if (!confPassword.isPresent() || !user.getPassword().equals(confPassword.get())) {
+        if (!confPassword.isPresent() || !newUser.getPassword().equals(confPassword.get())) {
             mod.addObject("confPasswordMessage", "Пароли не совпадают.");
         }
-        if (!UserValidator.validateUserName(user.getUserName())) {
+        if (!UserValidator.validateUserName(newUser.getUserName())) {
             mod.addObject("userNameMessage", "Логин должен быть не менее 5-х символов.");
         }
-        if (!UserValidator.validateFirstName(user.getFirstName())) {
+        if (!UserValidator.validateFirstName(newUser.getFirstName())) {
             mod.addObject("firstNameMessage", "Введите имя более 3-x символов.");
         }
-        if (!UserValidator.validateLastName(user.getLastName())) {
+        if (!UserValidator.validateLastName(newUser.getLastName())) {
             mod.addObject("lastNameMessage", "Введите фамилию более 3-х символов.");
         }
-        if (!UserValidator.validatePassword(user.getPassword())) {
+        if (!UserValidator.validatePassword(newUser.getPassword())) {
             mod.addObject("passwordMessage", "Придумайте пароль более 5 символов.");
         }
 
-        if (!UserValidator.validateEmail(user.getEmail())) {
+        if (!UserValidator.validateEmail(newUser.getEmail())) {
             mod.addObject("emailMessage", "Не верный Email.");
         }
-        if (UserValidator.checkValidateDataUser(user) &&
-                (!confPassword.isPresent() || user.getPassword().equals(confPassword.get()))) {
-            userService.saveUser(user, Optional.empty());
+        if (UserValidator.checkValidateDataUser(newUser) &&
+                (!confPassword.isPresent() || newUser.getPassword().equals(confPassword.get()))) {
+            userService.saveUser(newUser, Optional.empty());
             mod.addObject("successRegistration", "Пользователь успешно зарегистрирован!");
             mod.addObject("user", new User());
             mod.setViewName("signUp");

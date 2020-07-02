@@ -13,12 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.List;
+import java.util.logging.Level;
 
 @Repository
 @Transactional
 public class ProductRepository implements MyRepositoryInterface<Product> {
     private static final Logger logger = LoggerFactory.getLogger(ProductRepository.class);
-    private Statement statement;
     private DatabaseConnection databaseConnection = new DatabaseConnection();
 
     @Override
@@ -32,9 +32,9 @@ public class ProductRepository implements MyRepositoryInterface<Product> {
             preparedStatement.setString(4, String.valueOf(product.getDiscount()));
             preparedStatement.setString(5, String.valueOf(product.getCategory()));
             if (!preparedStatement.execute()) {
-                logger.info("Product: '" + product.getName() + "' successfully added!");
+                logger.info("Product: '{}' successfully added!", product.getName());
             } else {
-                logger.error("Product: '" + product.getName() + "' has not been added.");
+                logger.error("Product: '{}' has not been added.", product.getName());
             }
         }
     }
@@ -50,46 +50,63 @@ public class ProductRepository implements MyRepositoryInterface<Product> {
     }
 
     public Product findByProductName(String productName) throws SQLException {
-        String query = "SELECT * FROM product WHERE product_name = '" + productName + "'";
-        try (ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(query)) {
-            return ResultSetConverter.convertToProduct(resultSet);
+        String query = "SELECT * FROM product WHERE product_name = ?";
+        try(PreparedStatement preparedStatement = databaseConnection.getDbConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, productName);
+            return ResultSetConverter.convertToProduct(preparedStatement.executeQuery());
         }
+
     }
 
     @Override
     public Product getById(Long id) throws SQLException {
-        String query = "SELECT * FROM product WHERE id_product=" + id;
-        try (ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(query)) {
-            return ResultSetConverter.convertToProduct(resultSet);
+        String query = "SELECT * FROM product WHERE id_product=?";
+        try (PreparedStatement preparedStatement = databaseConnection.getDbConnection().prepareStatement(query)) {
+            preparedStatement.setLong(1, id);
+            return ResultSetConverter.convertToProduct(preparedStatement.executeQuery());
         }
     }
 
     @Override
     public void delete(Long id) throws SQLException {
-        String query = "DELETE FROM product WHERE id_product=" + id;
-        statement = databaseConnection.getDbConnection().createStatement();
-        statement.execute(query);
+        String query = "DELETE FROM product WHERE id_product=?";
+        try(PreparedStatement statement = databaseConnection.getDbConnection().prepareStatement(query)) {
+            statement.setLong(1, id);
+            statement.execute(query);
+        }
     }
 
     @Override
     public void update(Product product) throws SQLException {
-        statement = databaseConnection.getDbConnection().createStatement();
-        statement.executeUpdate(" UPDATE product SET product_name='" + product.getName() + "', price='" + product.getPrice() +
-                "', description='" + product.getDescription() + "',  discount='" + product.getDiscount() + "', id_category='" + product.getCategory() + "' " +
-                " WHERE id_product=" + product.getId() + "");
+        String query = " UPDATE product SET product_name=?, price=?, description=?,  discount=?, id_category=? " +
+                "WHERE id_product=?";
+        try(PreparedStatement statement = databaseConnection.getDbConnection().prepareStatement(query)) {
+            statement.setString(1, product.getName());
+            statement.setBigDecimal(2, product.getPrice());
+            statement.setString(3, product.getDescription());
+            statement.setBigDecimal(4, product.getDiscount());
+            statement.setString(5, product.getCategory());
+            statement.setLong(6, product.getId());
+            statement.executeUpdate();
+        }
     }
 
     public List<Product> findProductByCategory(String categoryName) throws SQLException {
         String query = "SELECT id_product, product_name, price, description, discount, categories.name_category as category " +
                 "FROM product, categories " +
-                "WHERE product.id_category=categories.id_category and categories.name_category=" + categoryName;
-        try (ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(query)) {
-            return ResultSetConverter.convertToListProduct(resultSet);
+                "WHERE product.id_category=categories.id_category and categories.name_category=?";
+        try (PreparedStatement preparedStatement = databaseConnection.getDbConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, categoryName);
+            return ResultSetConverter.convertToListProduct(preparedStatement.executeQuery());
         }
     }
 
     public void changeDiscountForCategories(Long idCategory, BigDecimal discount) throws SQLException {
-        statement = databaseConnection.getDbConnection().createStatement();
-        statement.executeUpdate("UPDATE product SET discount=" + discount + " WHERE id_category=" + idCategory);
+        String query = "UPDATE product SET discount=? WHERE id_category=?";
+        try(PreparedStatement statement = databaseConnection.getDbConnection().prepareStatement(query)) {
+            statement.setBigDecimal(1, discount);
+            statement.setLong(2, idCategory);
+            statement.executeUpdate();
+        }
     }
 }

@@ -2,7 +2,9 @@ package com.vladis1350.dao;
 
 import java.sql.*;
 
-public class DatabaseConnection extends DBConfig {
+import static com.vladis1350.dao.DBConfig.*;
+
+public class DatabaseConnection {
 
     public Connection getDbConnection() throws SQLException {
             String connectionString = "jdbc:mysql://" + DB_HOST + ":" + DB_PORT + "/" + DB_NAME + "?useUnicode=true&serverTimezone=UTC&useSSL=true&verifyServerCertificate=false";
