@@ -11,6 +11,7 @@ class ProductValidatorTest {
     @Test
     void shouldReturnFalseIfProductNameIsEmpty() {
         Assert.assertFalse(ProductValidator.validateName(""));
+        Assert.assertFalse(ProductValidator.validateName(null));
     }
 
     @Test

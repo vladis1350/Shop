@@ -7,50 +7,54 @@ import org.junit.jupiter.api.Test;
 
 class UserValidatorTest {
 
-    private User user;
+    private User userOne;
+    private User userTwo;
 
     @BeforeEach
     void setUp() {
-        user = User.builder()
+        userOne = User.builder()
                 .userName("grishanya")
                 .firstName("Grisha")
                 .lastName("Ivanov")
                 .email("grisha@mail.ru")
                 .password("010203").build();
+
+        userTwo = User.builder().build();
     }
 
     @Test
     void shouldReturnFalseIfUserNameFalse() {
-        user.setUserName("lsd");
-        Assert.assertFalse(UserValidator.checkValidateDataUser(user));
+        userOne.setUserName("lsd");
+        Assert.assertFalse(UserValidator.checkValidateDataUser(userOne));
+        Assert.assertFalse(UserValidator.checkValidateDataUser(userTwo));
     }
 
     @Test
     void shouldReturnFalseIfFirstNameFalse() {
-       user.setFirstName("GR");
-        Assert.assertFalse(UserValidator.checkValidateDataUser(user));
+       userOne.setFirstName("GR");
+        Assert.assertFalse(UserValidator.checkValidateDataUser(userOne));
     }
 
     @Test
     void shouldReturnFalseIfLastNameFalse() {
-        user.setLastName("DG");
-        Assert.assertFalse(UserValidator.checkValidateDataUser(user));
+        userOne.setLastName("DG");
+        Assert.assertFalse(UserValidator.checkValidateDataUser(userOne));
     }
 
     @Test
     void shouldReturnFalseIfEmailFalse() {
-        user.setEmail("grishamail");
-        Assert.assertFalse(UserValidator.checkValidateDataUser(user));
+        userOne.setEmail("grishamail");
+        Assert.assertFalse(UserValidator.checkValidateDataUser(userOne));
     }
 
     @Test
     void shouldReturnFalseIfPasswordFalse() {
-        user.setPassword("010");
-        Assert.assertFalse(UserValidator.checkValidateDataUser(user));
+        userOne.setPassword("010");
+        Assert.assertFalse(UserValidator.checkValidateDataUser(userOne));
     }
 
     @Test
     void shouldReturnTrueIfDataUserValid() {
-        Assert.assertTrue(UserValidator.checkValidateDataUser(user));
+        Assert.assertTrue(UserValidator.checkValidateDataUser(userOne));
     }
 }

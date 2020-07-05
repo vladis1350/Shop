@@ -15,11 +15,11 @@ public class ShoppingCartService {
         cartRepository.save(shoppingCart);
     }
 
-    public boolean findShoppingCartByIdUser(Long id) {
+    public boolean findShoppingCartByIdUserBool(Long id) {
         return cartRepository.findShoppingCartByIdUser(id) == null;
     }
 
-    public ShoppingCart findShoppingCart(Long id) {
+    public ShoppingCart findShoppingCartByIdUser(Long id) {
         return cartRepository.findShoppingCartByIdUser(id);
     }
 }

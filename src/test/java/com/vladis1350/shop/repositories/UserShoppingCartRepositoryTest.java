@@ -1,7 +1,7 @@
-package com.vladis1350.shop.service;
+package com.vladis1350.shop.repositories;
 
 import com.vladis1350.shop.bean.UserShoppingCart;
-import com.vladis1350.shop.repositories.UserShoppingCartRepository;
+import com.vladis1350.shop.service.UserShoppingCartMyService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -16,19 +18,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-class UserShoppingCartMyServiceTest {
+@SpringBootTest
+class UserShoppingCartRepositoryTest {
 
-    @Mock
+    @Autowired
     private UserShoppingCartRepository userShoppingCartRepository;
-
-    @InjectMocks
-    private UserShoppingCartMyService userShoppingCartMyService;
 
     private UserShoppingCart userShoppingCart;
 
@@ -45,24 +46,10 @@ class UserShoppingCartMyServiceTest {
     }
 
     @Test
-    void save() throws SQLException {
-        userShoppingCartRepository.save(userShoppingCart);
-        verify(userShoppingCartRepository, times(1)).save(userShoppingCart);
-    }
-
-    @Test
-    void update() throws SQLException {
-        userShoppingCartRepository.update(userShoppingCart);
-        userShoppingCart.setQuantityOfGoods(5);
-        userShoppingCartRepository.update(userShoppingCart);
-        verify(userShoppingCartRepository, times(2)).update(userShoppingCart);
-    }
-
-    @Test
     void getById() throws SQLException {
         given(this.userShoppingCartRepository.getById(any()))
                 .willReturn(userShoppingCart);
-        UserShoppingCart userShoppingCartTest = userShoppingCartMyService.getById(1L);
+        UserShoppingCart userShoppingCartTest = this.userShoppingCartRepository.getById(1L);
         assertThat(userShoppingCartTest.getIdCart()).isEqualTo(1);
     }
 
@@ -70,20 +57,8 @@ class UserShoppingCartMyServiceTest {
     void getByProductId() throws SQLException {
         given(this.userShoppingCartRepository.getByProductId(any(), any()))
                 .willReturn(userShoppingCart);
-        UserShoppingCart userShoppingCartTest = userShoppingCartMyService.getByProductId(2L,  1L);
+        UserShoppingCart userShoppingCartTest = this.userShoppingCartRepository.getByProductId(2L,  1L);
         assertThat(userShoppingCartTest.getIdProduct()).isEqualTo(2);
-    }
-
-    @Test
-    void remove() throws SQLException {
-        userShoppingCartRepository.delete(userShoppingCart.getIdCart());
-        verify(userShoppingCartRepository, times(1)).delete(1L);
-    }
-
-    @Test
-    void testRemove() throws SQLException {
-        userShoppingCartRepository.deleteProductFromCart(userShoppingCart.getIdCart(), userShoppingCart.getIdProduct());
-        verify(userShoppingCartRepository, times(1)).deleteProductFromCart(1L, 2L);
     }
 
     @Test
@@ -92,7 +67,7 @@ class UserShoppingCartMyServiceTest {
         userShoppingCarts.add(userShoppingCart);
         given(this.userShoppingCartRepository.findAll())
                 .willReturn(userShoppingCarts);
-        List<UserShoppingCart> userShoppingCartsActual = userShoppingCartMyService.findAll();
+        List<UserShoppingCart> userShoppingCartsActual = this.userShoppingCartRepository.findAll();
         assertThat(userShoppingCartsActual.size() == userShoppingCarts.size());
     }
 
@@ -102,7 +77,7 @@ class UserShoppingCartMyServiceTest {
         userShoppingCarts.add(userShoppingCart);
         given(this.userShoppingCartRepository.findAllById(userShoppingCart.getIdCart()))
                 .willReturn(userShoppingCarts);
-        List<UserShoppingCart> userShoppingCartsActual = userShoppingCartMyService.findAllById(1L);
+        List<UserShoppingCart> userShoppingCartsActual = this.userShoppingCartRepository.findAllById(1L);
         assertThat(userShoppingCartsActual.size() == userShoppingCarts.size());
     }
 }

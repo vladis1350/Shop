@@ -8,6 +8,7 @@ class UserValidatorUserNameTest {
     @Test
     void shouldReturnFalseIfUserNameIsEmpty() {
         Assert.assertFalse(UserValidator.validateUserName(""));
+        Assert.assertFalse(UserValidator.validateUserName(null));
     }
 
     @Test

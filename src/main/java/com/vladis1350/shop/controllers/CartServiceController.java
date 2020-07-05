@@ -46,14 +46,14 @@ public class CartServiceController {
             @ModelAttribute("countOfGoods") Integer count,
             @PathVariable(name = "id") Long id) throws SQLException {
         User user = userService.getCurrentAuthenticationUser();
-        if (cartService.findShoppingCartByIdUser(user.getId())) {
+        if (cartService.findShoppingCartByIdUserBool(user.getId())) {
             ShoppingCart shoppingCart = ShoppingCart.builder()
                     .idUser(user.getId())
                     .build();
             cartService.saveShoppingCart(shoppingCart);
         }
         Product product = productService.getById(id);
-        Long idShoppingCart = cartService.findShoppingCart(user.getId()).getId();
+        Long idShoppingCart = cartService.findShoppingCartByIdUser(user.getId()).getId();
         if (userShoppingCartService.getByProductId(product.getId(), idShoppingCart) != null) {
             Integer quantityInBasket = userShoppingCartService.getQuantityProductsInUserShoppingCart(product.getId(), idShoppingCart);
             int totalQuantity = count+quantityInBasket;
@@ -66,7 +66,7 @@ public class CartServiceController {
             userShoppingCartService.update(shoppingCart);
         } else {
             UserShoppingCart userShoppingCart = UserShoppingCart.builder()
-                    .idCart(cartService.findShoppingCart(user.getId()).getId())
+                    .idCart(cartService.findShoppingCartByIdUser(user.getId()).getId())
                     .idProduct(product.getId())
                     .quantityOfGoods(count)
                     .amountOfMoney(product.getPrice().multiply(BigDecimal.valueOf(count))).build();
@@ -79,7 +79,7 @@ public class CartServiceController {
     public ModelAndView showUserShoppingCart() throws SQLException {
         ModelAndView mod = new ModelAndView("shopping_cart");
         User user = userService.getCurrentAuthenticationUser();
-        Long idShoppingCart = cartService.findShoppingCart(user.getId()).getId();
+        Long idShoppingCart = cartService.findShoppingCartByIdUser(user.getId()).getId();
         mod.addObject(SuccessConstants.IS_AUTHENTICATED, userAccessService.isCurrentUserAuthenticated());
         mod.addObject("userProductList", userShoppingCartService.findAllById(idShoppingCart));
         return mod;
@@ -90,7 +90,7 @@ public class CartServiceController {
                                           @PathVariable(name = "id_product") Long idProduct) throws SQLException {
         ModelAndView mod = new ModelAndView();
         User user = userService.getCurrentAuthenticationUser();
-        Long idShoppingCart = cartService.findShoppingCart(user.getId()).getId();
+        Long idShoppingCart = cartService.findShoppingCartByIdUser(user.getId()).getId();
         userShoppingCartService.remove(idCart, idProduct);
         mod.addObject("userProductList", userShoppingCartService.findAllById(idShoppingCart));
         mod.setViewName(Pages.REDIRECT + "shopping_cart");

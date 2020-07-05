@@ -8,6 +8,7 @@ class UserValidatorFirstAndLastNameTest {
     @Test
     void shouldReturnFalseIfFirstNameIsEmpty() {
         Assert.assertFalse(UserValidator.validateFirstName(""));
+        Assert.assertFalse(UserValidator.validateFirstName(null));
     }
 
     @Test
@@ -36,8 +37,9 @@ class UserValidatorFirstAndLastNameTest {
     }
 
     @Test
-    void shouldReturnFalseIfLengthLastNameMoreFiftyFive() {
+    void shouldReturnFalseIfLengthLastNameMoreFiftyFiveOrNull() {
         Assert.assertFalse(UserValidator.validateLastName("ssdfsdfsaaaadfwerwerrqeqweqwfwgqrwerrwrwrwrwwwfsvbsefdFE"));
+        Assert.assertFalse(UserValidator.validateLastName(null));
     }
 
     @Test

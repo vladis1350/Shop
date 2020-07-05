@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.List;
-import java.util.logging.Level;
 
 @Repository
 @Transactional

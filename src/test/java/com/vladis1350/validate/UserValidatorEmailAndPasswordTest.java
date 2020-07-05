@@ -8,6 +8,7 @@ class UserValidatorEmailAndPasswordTest {
     @Test
     void shouldReturnTrueIfEmailValidate() {
         Assert.assertTrue(UserValidator.validateEmail("zerdonik@gmail.com"));
+        Assert.assertFalse(UserValidator.validateEmail(null));
     }
 
     @Test
@@ -34,5 +35,6 @@ class UserValidatorEmailAndPasswordTest {
     @Test
     void shouldReturnFalseIfLengthPasswordLessFive() {
         Assert.assertFalse(UserValidator.validatePassword("123"));
+        Assert.assertFalse(UserValidator.validatePassword(null));
     }
 }

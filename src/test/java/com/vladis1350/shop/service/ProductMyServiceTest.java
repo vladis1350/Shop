@@ -5,11 +5,10 @@ import com.vladis1350.shop.repositories.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -23,16 +22,18 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-@SpringBootTest
 class ProductMyServiceTest {
 
     private Product product;
 
-    @MockBean
+    @Mock
     private ProductRepository productRepository;
 
-    @Autowired
+    @InjectMocks
     private ProductMyService productMyService;
+
+    @Mock
+    private ProductMyService productMyServiceMock;
 
     @BeforeEach
     void setUp() {
