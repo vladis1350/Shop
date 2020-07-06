@@ -1,18 +1,27 @@
 package com.vladis1350.shop.repositories;
 
-import com.vladis1350.shop.bean.Product;
-import com.vladis1350.dao.DatabaseConnection;
 import com.vladis1350.constants.ProductDataConstant;
-import com.vladis1350.shop.converters.ResultSetConverter;
+import com.vladis1350.dao.DatabaseConnection;
+import com.vladis1350.shop.bean.Product;
+import com.vladis1350.shop.mappers.ProductRowMapper;
+import com.vladis1350.shop.mappers.ResultSetConverter;
 import com.vladis1350.shop.repositories.interfaces.MyRepositoryInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -20,50 +29,46 @@ public class ProductRepository implements MyRepositoryInterface<Product> {
     private static final Logger logger = LoggerFactory.getLogger(ProductRepository.class);
     private DatabaseConnection databaseConnection = new DatabaseConnection();
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
     @Override
     public void save(Product product) throws SQLException {
-        String insert = "INSERT INTO product (" + ProductDataConstant.PRODUCT_NAME + "," + ProductDataConstant.PRODUCT_PRICE + "," +
-                ProductDataConstant.PRODUCT_DESCRIPTION + "," + ProductDataConstant.PRODUCT_DISCOUNT + "," + ProductDataConstant.PRODUCT_CATEGORY + ") VALUES(?,?,?,?,?)";
-        try (PreparedStatement preparedStatement = databaseConnection.getDbConnection().prepareStatement(insert)) {
-            preparedStatement.setString(1, product.getName());
-            preparedStatement.setString(2, String.valueOf(product.getPrice()));
-            preparedStatement.setString(3, product.getDescription());
-            preparedStatement.setString(4, String.valueOf(product.getDiscount()));
-            preparedStatement.setString(5, String.valueOf(product.getCategory()));
-            if (!preparedStatement.execute()) {
-                logger.info("Product: '{}' successfully added!", product.getName());
-            } else {
-                logger.error("Product: '{}' has not been added.", product.getName());
-            }
-        }
+        String insert = "INSERT INTO product VALUES(:id, :name, :price, :description, :discount, :category)";
+        SqlParameterSource namedParameter = new BeanPropertySqlParameterSource(product);
+        namedParameterJdbcTemplate.update(insert, namedParameter);
     }
 
     @Override
-    public List<Product> findAll() throws SQLException {
+    public List<Product> findAll() {
         String query = "SELECT id_product, product_name, price, description, discount, categories.name_category as category " +
                 "FROM product, categories " +
                 "WHERE product.id_category=categories.id_category";
-        try (ResultSet resultSet = databaseConnection.getDbConnection().createStatement().executeQuery(query)) {
-            return ResultSetConverter.convertToListProduct(resultSet);
-        }
+        return jdbcTemplate.query(query, new ProductRowMapper());
     }
 
     public Product findByProductName(String productName) throws SQLException {
-        String query = "SELECT * FROM product WHERE product_name = ?";
-        try(PreparedStatement preparedStatement = databaseConnection.getDbConnection().prepareStatement(query)) {
-            preparedStatement.setString(1, productName);
-            return ResultSetConverter.convertToProduct(preparedStatement.executeQuery());
+        String query = "SELECT * FROM product WHERE product_name = :name";
+        SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("name", productName);
+        List<Product> product = namedParameterJdbcTemplate.query(query, parameterSource, new ProductRowMapper());
+        if (product.isEmpty()){
+            return null;
         }
-
+        return product.get(0);
     }
 
     @Override
     public Product getById(Long id) throws SQLException {
-        String query = "SELECT * FROM product WHERE id_product=?";
-        try (PreparedStatement preparedStatement = databaseConnection.getDbConnection().prepareStatement(query)) {
-            preparedStatement.setLong(1, id);
-            return ResultSetConverter.convertToProduct(preparedStatement.executeQuery());
+        String query = "SELECT * FROM product WHERE id_product=:id";
+        SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("id", id);
+        List<Product> product = namedParameterJdbcTemplate.query(query, parameterSource, new ProductRowMapper());
+        if (product.isEmpty()){
+            return null;
         }
+        return product.get(0);
     }
 
     @Override

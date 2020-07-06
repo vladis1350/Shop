@@ -32,9 +32,6 @@ class ProductMyServiceTest {
     @InjectMocks
     private ProductMyService productMyService;
 
-    @Mock
-    private ProductMyService productMyServiceMock;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -74,7 +71,7 @@ class ProductMyServiceTest {
     }
 
     @Test
-    void findAll() throws SQLException {
+    void findAll() {
         ArrayList<Product> productList = new ArrayList<>();
         productList.add(product);
         given(this.productRepository.findAll()).willReturn(productList);

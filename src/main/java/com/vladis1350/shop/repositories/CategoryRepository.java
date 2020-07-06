@@ -2,7 +2,7 @@ package com.vladis1350.shop.repositories;
 
 import com.vladis1350.dao.DatabaseConnection;
 import com.vladis1350.shop.bean.Category;
-import com.vladis1350.shop.converters.ResultSetConverter;
+import com.vladis1350.shop.mappers.ResultSetConverter;
 import com.vladis1350.shop.repositories.interfaces.MyRepositoryInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

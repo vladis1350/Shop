@@ -37,7 +37,7 @@ public class ProductMyService implements MyServiceInterface<Product> {
     }
 
     @Override
-    public List<Product> findAll() throws SQLException {
+    public List<Product> findAll() {
         return productRepository.findAll();
     }
 

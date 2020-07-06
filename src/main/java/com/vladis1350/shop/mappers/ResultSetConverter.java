@@ -1,4 +1,4 @@
-package com.vladis1350.shop.converters;
+package com.vladis1350.shop.mappers;
 
 import com.vladis1350.shop.bean.Category;
 import com.vladis1350.shop.bean.Product;
