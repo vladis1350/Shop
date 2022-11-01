@@ -22,6 +22,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 public class CartServiceController {
@@ -54,23 +56,27 @@ public class CartServiceController {
         }
         Product product = productService.getById(id);
         Long idShoppingCart = cartService.findShoppingCartByIdUser(user.getId()).getId();
-        if (userShoppingCartService.getByProductId(product.getId(), idShoppingCart) != null) {
+        if (userShoppingCartService.getByProductId(product, idShoppingCart) != null) {
             Integer quantityInBasket = userShoppingCartService.getQuantityProductsInUserShoppingCart(product.getId(), idShoppingCart);
             int totalQuantity = count+quantityInBasket;
-            UserShoppingCart shoppingCart = UserShoppingCart.builder()
-                    .idCart(idShoppingCart)
-                    .idProduct(product.getId())
-                    .quantityOfGoods(totalQuantity)
-                    .amountOfMoney(product.getPrice().multiply(BigDecimal.valueOf(totalQuantity)))
-                    .build();
+
+            UserShoppingCart shoppingCart = userShoppingCartService.getByProductId(product, idShoppingCart);
+            Set<Product> productList = shoppingCart.getProducts();
+                    productList.add(product);
+                    shoppingCart.setProducts(shoppingCart.getProducts());
+                    shoppingCart.setQuantityOfGoods(totalQuantity);
+                    shoppingCart.setAmountOfMoney(product.getPrice().multiply(BigDecimal.valueOf(totalQuantity)));
             userShoppingCartService.update(shoppingCart);
         } else {
-            UserShoppingCart userShoppingCart = UserShoppingCart.builder()
-                    .idCart(cartService.findShoppingCartByIdUser(user.getId()).getId())
-                    .idProduct(product.getId())
-                    .quantityOfGoods(count)
-                    .amountOfMoney(product.getPrice().multiply(BigDecimal.valueOf(count))).build();
-            userShoppingCartService.save(userShoppingCart);
+            UserShoppingCart userShoppingCart2 = userShoppingCartService.getById(cartService.findShoppingCartByIdUser(user.getId()).getId());
+            if (userShoppingCart2 != null) {
+                Set<Product> productList = userShoppingCart2.getProducts();
+                productList.add(product);
+                userShoppingCart2.setQuantityOfGoods(count);
+                userShoppingCart2.setAmountOfMoney(product.getPrice().multiply(BigDecimal.valueOf(count)));
+                userShoppingCartService.save(userShoppingCart2);
+            }
+
         }
         return Pages.REDIRECT + Pages.HOME;
     }
@@ -81,7 +87,7 @@ public class CartServiceController {
         User user = userService.getCurrentAuthenticationUser();
         Long idShoppingCart = cartService.findShoppingCartByIdUser(user.getId()).getId();
         mod.addObject(SuccessConstants.IS_AUTHENTICATED, userAccessService.isCurrentUserAuthenticated());
-        mod.addObject("userProductList", userShoppingCartService.findAllById(idShoppingCart));
+        mod.addObject("userProductList", userShoppingCartService.findAllByIdCart(idShoppingCart));
         return mod;
     }
 
@@ -92,7 +98,7 @@ public class CartServiceController {
         User user = userService.getCurrentAuthenticationUser();
         Long idShoppingCart = cartService.findShoppingCartByIdUser(user.getId()).getId();
         userShoppingCartService.remove(idCart, idProduct);
-        mod.addObject("userProductList", userShoppingCartService.findAllById(idShoppingCart));
+        mod.addObject("userProductList", userShoppingCartService.findAllByIdCart(idShoppingCart));
         mod.setViewName(Pages.REDIRECT + "shopping_cart");
         return mod;
     }

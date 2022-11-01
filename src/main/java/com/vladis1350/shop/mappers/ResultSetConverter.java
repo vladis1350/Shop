@@ -14,19 +14,19 @@ public class ResultSetConverter {
 
     private ResultSetConverter(){}
 
-    public static List<Product> convertToListProduct(ResultSet resultSet) throws SQLException {
-        List<Product> list = new ArrayList<>();
-        while (resultSet.next()) {
-            Long id = resultSet.getLong(1);
-            String name = resultSet.getString(2);
-            BigDecimal price = resultSet.getBigDecimal(3);
-            String desc = resultSet.getString(4);
-            BigDecimal discount = resultSet.getBigDecimal(5);
-            String category = resultSet.getString(6);
-            list.add(new Product(id, name, price, category, discount, desc));
-        }
-        return list;
-    }
+//    public static List<Product> convertToListProduct(ResultSet resultSet) throws SQLException {
+//        List<Product> list = new ArrayList<>();
+//        while (resultSet.next()) {
+//            Long id = resultSet.getLong(1);
+//            String name = resultSet.getString(2);
+//            BigDecimal price = resultSet.getBigDecimal(3);
+//            String desc = resultSet.getString(4);
+//            BigDecimal discount = resultSet.getBigDecimal(5);
+//            String category = resultSet.getString(6);
+//            list.add(new Product(id, name, price, category, discount, desc));
+//        }
+//        return list;
+//    }
 
     public static List<Category> convertToListCategory(ResultSet resultSet) throws SQLException {
         List<Category> list = new ArrayList<>();
@@ -38,21 +38,21 @@ public class ResultSetConverter {
         return list;
     }
 
-    public static List<UserShoppingCart> convertToListUserShoppingCart(ResultSet resultSet) throws SQLException {
-        List<UserShoppingCart> list = new ArrayList<>();
-        while (resultSet.next()) {
-            UserShoppingCart shoppingCart = UserShoppingCart.builder()
-                    .idCart(resultSet.getLong(1))
-                    .idProduct(resultSet.getLong(2))
-                    .product(resultSet.getString(3))
-                    .price(resultSet.getBigDecimal(4))
-                    .quantityOfGoods(resultSet.getInt(5))
-                    .amountOfMoney(resultSet.getBigDecimal(6))
-                    .build();
-            list.add(shoppingCart);
-        }
-        return list;
-    }
+//    public static List<UserShoppingCart> convertToListUserShoppingCart(ResultSet resultSet) throws SQLException {
+//        List<UserShoppingCart> list = new ArrayList<>();
+//        while (resultSet.next()) {
+//            UserShoppingCart shoppingCart = UserShoppingCart.builder()
+//                    .idCart(resultSet.getLong(1))
+//                    .idProduct(resultSet.getLong(2))
+//                    .product(resultSet.getString(3))
+//                    .price(resultSet.getBigDecimal(4))
+//                    .quantityOfGoods(resultSet.getInt(5))
+//                    .amountOfMoney(resultSet.getBigDecimal(6))
+//                    .build();
+//            list.add(shoppingCart);
+//        }
+//        return list;
+//    }
 
     public static Product convertToProduct(ResultSet resultSet) throws SQLException {
         Product product = null;
@@ -69,18 +69,18 @@ public class ResultSetConverter {
         return product;
     }
 
-    public static UserShoppingCart convertToUserShoppingCart(ResultSet resultSet) throws SQLException {
-        UserShoppingCart userShoppingCart = null;
-        while (resultSet.next()) {
-            userShoppingCart = UserShoppingCart.builder()
-                    .idCart(resultSet.getLong(1))
-                    .idProduct(resultSet.getLong(2))
-                    .quantityOfGoods(resultSet.getInt(3))
-                    .amountOfMoney(resultSet.getBigDecimal(4))
-                    .build();
-        }
-        return userShoppingCart;
-    }
+//    public static UserShoppingCart convertToUserShoppingCart(ResultSet resultSet) throws SQLException {
+//        UserShoppingCart userShoppingCart = null;
+//        while (resultSet.next()) {
+//            userShoppingCart = UserShoppingCart.builder()
+//                    .idCart(resultSet.getLong(1))
+//                    .idProduct(resultSet.getLong(2))
+//                    .quantityOfGoods(resultSet.getInt(3))
+//                    .amountOfMoney(resultSet.getBigDecimal(4))
+//                    .build();
+//        }
+//        return userShoppingCart;
+//    }
 
     public static Category convertToCategory(ResultSet resultSet) throws SQLException {
         Category category = null;

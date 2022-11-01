@@ -22,17 +22,17 @@ public class CategoryMyService implements MyServiceInterface<Category> {
 
     @Override
     public void update(Category category) throws SQLException {
-        this.categoryRepository.update(category);
+        this.categoryRepository.save(category);
     }
 
     @Override
     public Category getById(Long id) throws SQLException {
-        return this.categoryRepository.getById(id);
+        return categoryRepository.getById(id);
     }
 
     @Override
-    public void remove(Long id) throws SQLException {
-        this.categoryRepository.delete(id);
+    public void delete(Long id) throws SQLException {
+        categoryRepository.delete(getById(id));
     }
 
     @Override

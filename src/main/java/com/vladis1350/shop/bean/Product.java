@@ -1,24 +1,19 @@
 package com.vladis1350.shop.bean;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.vladis1350.auth.bean.User;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.data.annotation.Id;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
+@Entity
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "product")
 public class Product implements Serializable {
     @Id
@@ -42,5 +37,11 @@ public class Product implements Serializable {
 
     @Column(name = "description")
     private String description;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "id_userShoppingCart", nullable = false)
+    private UserShoppingCart userShoppingCart;
 
 }

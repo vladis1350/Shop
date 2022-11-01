@@ -1,16 +1,14 @@
 package com.vladis1350.shop.bean;
 
 import com.vladis1350.auth.bean.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -22,6 +20,10 @@ public class Order implements Serializable {
     @Column(name = "id_order")
     private Long id;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "id_user", nullable = false)
     private User user;
 
     @Column(name = "date")

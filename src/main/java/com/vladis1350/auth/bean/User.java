@@ -1,9 +1,7 @@
 package com.vladis1350.auth.bean;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.vladis1350.shop.bean.Order;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -40,6 +38,11 @@ public class User implements Serializable {
 
     @Column(name = "active")
     private Boolean active;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Order> orders;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))

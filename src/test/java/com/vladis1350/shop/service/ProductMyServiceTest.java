@@ -51,23 +51,11 @@ class ProductMyServiceTest {
     }
 
     @Test
-    void update() throws SQLException {
-        productRepository.update(product);
-        verify(productRepository, times(1)).update(product);
-    }
-
-    @Test
     void getById() throws SQLException {
         given(this.productRepository.getById(any()))
                 .willReturn(product);
         Product product1 = productMyService.getById(2L);
         assertThat(product1.getId()).isEqualTo(2);
-    }
-
-    @Test
-    void remove() throws SQLException {
-        productRepository.delete(5L);
-        verify(productRepository, times(1)).delete(5L);
     }
 
     @Test
@@ -90,16 +78,10 @@ class ProductMyServiceTest {
 
     @Test
     void findByProductName() throws SQLException {
-        given(this.productRepository.findByProductName(any()))
+        given(this.productRepository.findByName(any()))
                 .willReturn(product);
         Product product1 = productMyService.findByProductName("Salo");
         assertThat(product1.getName()).isEqualTo("Salo");
     }
 
-    @Test
-    void changeDiscountForCategories() throws SQLException {
-        productRepository.changeDiscountForCategories(2L, BigDecimal.valueOf(15.30));
-        verify(productRepository, times(1))
-                .changeDiscountForCategories(2L, BigDecimal.valueOf(15.30));
-    }
 }

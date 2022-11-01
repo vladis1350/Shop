@@ -43,24 +43,11 @@ class CategoryMyServiceTest {
     }
 
     @Test
-    void update() throws SQLException {
-        category.setNameCategory("Test category");
-        categoryRepository.update(category);
-        verify(categoryRepository, times(1)).update(category);
-    }
-
-    @Test
     void getById() throws SQLException {
         given(this.categoryRepository.getById(any()))
                 .willReturn(category);
         Category categoryTest = categoryMyService.getById(9L);
         assertThat(categoryTest.getId()).isEqualTo(9);
-    }
-
-    @Test
-    void remove() throws SQLException {
-        categoryRepository.delete(9L);
-        verify(categoryRepository, times(1)).delete(9L);
     }
 
     @Test

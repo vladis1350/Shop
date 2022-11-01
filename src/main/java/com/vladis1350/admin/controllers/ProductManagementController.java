@@ -102,7 +102,7 @@ public class ProductManagementController {
 
     @GetMapping(value = Http.DELETE_PRODUCT + "/{id}")
     public ModelAndView deleteProducts(@PathVariable(name = "id") Long id) throws SQLException {
-        productService.remove(id);
+        productService.delete(id);
         return new ModelAndView(Pages.REDIRECT + "admin/products");
     }
 

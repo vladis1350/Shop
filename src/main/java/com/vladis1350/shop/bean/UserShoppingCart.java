@@ -1,17 +1,16 @@
 package com.vladis1350.shop.bean;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Data
 @Builder
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user_shopping_cart")
@@ -21,8 +20,10 @@ public class UserShoppingCart implements Serializable {
     @Column(name = "id_shopping_cart")
     private Long idCart;
 
-    @Column(name = "id_product")
-    private Long idProduct;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "userShoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Product> products;
 
     private String product;
     private BigDecimal price;

@@ -1,5 +1,6 @@
 package com.vladis1350.shop.service;
 
+import com.vladis1350.shop.bean.Category;
 import com.vladis1350.shop.bean.Product;
 import com.vladis1350.shop.repositories.ProductRepository;
 import com.vladis1350.shop.service.interfaces.MyServiceInterface;
@@ -23,7 +24,7 @@ public class ProductMyService implements MyServiceInterface<Product> {
 
     @Override
     public void update(Product product) throws SQLException {
-        this.productRepository.update(product);
+        this.productRepository.save(product);
     }
 
     @Override
@@ -32,8 +33,8 @@ public class ProductMyService implements MyServiceInterface<Product> {
     }
 
     @Override
-    public void remove(Long id) throws SQLException {
-        this.productRepository.delete(id);
+    public void delete(Long id) throws SQLException {
+        this.productRepository.delete(getById(id));
     }
 
     @Override
@@ -41,15 +42,17 @@ public class ProductMyService implements MyServiceInterface<Product> {
         return productRepository.findAll();
     }
 
-    public List<Product> findAllByCategory(String category) throws SQLException {
+    public List<Product> findAllByCategory(String category){
         return productRepository.findProductByCategory(category);
     }
 
-    public Product findByProductName(String productName) throws SQLException {
-        return productRepository.findByProductName(productName);
+    public Product findByProductName(String productName) {
+        return productRepository.findByName(productName);
     }
 
     public void changeDiscountForCategories(Long idCategory, BigDecimal discount) throws SQLException {
-        productRepository.changeDiscountForCategories(idCategory, discount);
+        Product product = productRepository.getById(idCategory);
+        product.setDiscount(discount);
+        save(product);
     }
 }

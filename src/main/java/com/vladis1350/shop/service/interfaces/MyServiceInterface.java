@@ -7,6 +7,6 @@ public interface MyServiceInterface<T> {
     void save(T entity) throws SQLException;
     void update(T entity) throws SQLException;
     T getById(Long id) throws SQLException;
-    void remove(Long id) throws SQLException;
+    void delete(Long id) throws SQLException;
     List<T> findAll() throws SQLException;
 }
